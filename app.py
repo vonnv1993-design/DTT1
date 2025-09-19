@@ -38,7 +38,7 @@ def load_matches_from_db():
         return None
     return [json.loads(row[0]) for row in rows]
 
-# CSS tùy chỉnh
+# CSS tùy chỉnh, bao gồm tối ưu cho mobile
 st.markdown("""
 <style>
     .main .block-container {
@@ -133,6 +133,54 @@ st.markdown("""
     }
     .nav-container button {
         flex: 1;
+    }
+
+    /* Responsive cho mobile */
+    @media (max-width: 600px) {
+        .nav-container {
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+        }
+        .nav-container button {
+            width: 100% !important;
+            flex: none !important;
+        }
+        .match-card, .final-match {
+            padding: 0.5rem !important;
+            font-size: 0.9rem !important;
+        }
+        .match-title {
+            font-size: 1rem !important;
+        }
+        .team-info {
+            font-size: 0.85rem !important;
+        }
+        .team-name {
+            font-weight: 600;
+            font-size: 1rem !important;
+        }
+        .team-players {
+            font-size: 0.75rem !important;
+        }
+        .standing-item {
+            font-size: 0.85rem !important;
+            padding: 0.3rem !important;
+        }
+        .ranking-item {
+            font-size: 0.9rem !important;
+            padding: 0.7rem !important;
+        }
+        .ranking-title {
+            font-size: 1.1rem !important;
+        }
+        .ranking-position {
+            font-size: 1.2rem !important;
+        }
+        /* Giảm khoảng cách giữa các cột */
+        .stColumns > div {
+            padding-left: 0.2rem !important;
+            padding-right: 0.2rem !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -350,7 +398,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Navigation
 # Navigation
 st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
