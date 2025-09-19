@@ -1,5 +1,7 @@
 import streamlit as st
 from typing import Optional
+import sqlite3
+import json
 
 # Cấu hình trang
 st.set_page_config(
@@ -8,6 +10,34 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# Kết nối SQLite
+conn = sqlite3.connect('pickleball.db', check_same_thread=False)
+cursor = conn.cursor()
+
+# Tạo bảng matches nếu chưa tồn tại
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS matches (
+    id TEXT PRIMARY KEY,
+    data TEXT NOT NULL
+)
+''')
+conn.commit()
+
+def save_matches_to_db(matches):
+    for match in matches:
+        cursor.execute('''
+            INSERT OR REPLACE INTO matches (id, data) VALUES (?, ?)
+        ''', (match['id'], json.dumps(match)))
+    conn.commit()
+
+def load_matches_from_db():
+    cursor.execute('SELECT data FROM matches')
+    rows = cursor.fetchall()
+    if not rows:
+        return None
+    matches = [json.loads(row[0]) for row in rows]
+    return matches
 
 # Custom CSS cho mobile
 st.markdown("""
@@ -372,24 +402,29 @@ teams = [
     {"id": 8, "name": "Đội 8", "players": ["Trung", "Kiên"], "group": "B"},
 ]
 
-# Khởi tạo session state
+# Khởi tạo session state matches từ DB hoặc mặc định
 if 'matches' not in st.session_state:
-    st.session_state.matches = [
-        # Group A
-        {"id": "A1", "team1": teams[0], "team2": teams[1], "score1": None, "score2": None, "stage": "group", "group": "A"},
-        {"id": "A2", "team1": teams[2], "team2": teams[3], "score1": None, "score2": None, "stage": "group", "group": "A"},
-        {"id": "A3", "team1": teams[0], "team2": teams[2], "score1": None, "score2": None, "stage": "group", "group": "A"},
-        {"id": "A4", "team1": teams[1], "team2": teams[3], "score1": None, "score2": None, "stage": "group", "group": "A"},
-        {"id": "A5", "team1": teams[1], "team2": teams[2], "score1": None, "score2": None, "stage": "group", "group": "A"},
-        {"id": "A6", "team1": teams[0], "team2": teams[3], "score1": None, "score2": None, "stage": "group", "group": "A"},
-        # Group B
-        {"id": "B1", "team1": teams[5], "team2": teams[7], "score1": None, "score2": None, "stage": "group", "group": "B"},
-        {"id": "B2", "team1": teams[6], "team2": teams[7], "score1": None, "score2": None, "stage": "group", "group": "B"},
-        {"id": "B3", "team1": teams[4], "team2": teams[6], "score1": None, "score2": None, "stage": "group", "group": "B"},
-        {"id": "B4", "team1": teams[4], "team2": teams[5], "score1": None, "score2": None, "stage": "group", "group": "B"},
-        {"id": "B5", "team1": teams[5], "team2": teams[6], "score1": None, "score2": None, "stage": "group", "group": "B"},
-        {"id": "B6", "team1": teams[4], "team2": teams[7], "score1": None, "score2": None, "stage": "group", "group": "B"},
-    ]
+    loaded_matches = load_matches_from_db()
+    if loaded_matches is not None:
+        st.session_state.matches = loaded_matches
+    else:
+        st.session_state.matches = [
+            # Group A
+            {"id": "A1", "team1": teams[0], "team2": teams[1], "score1": None, "score2": None, "stage": "group", "group": "A"},
+            {"id": "A2", "team1": teams[2], "team2": teams[3], "score1": None, "score2": None, "stage": "group", "group": "A"},
+            {"id": "A3", "team1": teams[0], "team2": teams[2], "score1": None, "score2": None, "stage": "group", "group": "A"},
+            {"id": "A4", "team1": teams[1], "team2": teams[3], "score1": None, "score2": None, "stage": "group", "group": "A"},
+            {"id": "A5", "team1": teams[1], "team2": teams[2], "score1": None, "score2": None, "stage": "group", "group": "A"},
+            {"id": "A6", "team1": teams[0], "team2": teams[3], "score1": None, "score2": None, "stage": "group", "group": "A"},
+            # Group B
+            {"id": "B1", "team1": teams[5], "team2": teams[7], "score1": None, "score2": None, "stage": "group", "group": "B"},
+            {"id": "B2", "team1": teams[6], "team2": teams[7], "score1": None, "score2": None, "stage": "group", "group": "B"},
+            {"id": "B3", "team1": teams[4], "team2": teams[6], "score1": None, "score2": None, "stage": "group", "group": "B"},
+            {"id": "B4", "team1": teams[4], "team2": teams[5], "score1": None, "score2": None, "stage": "group", "group": "B"},
+            {"id": "B5", "team1": teams[5], "team2": teams[6], "score1": None, "score2": None, "stage": "group", "group": "B"},
+            {"id": "B6", "team1": teams[4], "team2": teams[7], "score1": None, "score2": None, "stage": "group", "group": "B"},
+        ]
+        save_matches_to_db(st.session_state.matches)
 
 if 'current_stage' not in st.session_state:
     st.session_state.current_stage = 'group'
@@ -415,7 +450,6 @@ def calculate_standings():
             }
             standings.append(standing)
         
-        # Tính điểm cho mỗi trận đấu
         for match in group_matches:
             if match["score1"] is not None and match["score2"] is not None:
                 team1_standing = next(s for s in standings if s["team"]["id"] == match["team1"]["id"])
@@ -433,11 +467,9 @@ def calculate_standings():
                     team2_standing["wins"] += 1
                     team1_standing["losses"] += 1
         
-        # Tính hiệu số
         for standing in standings:
             standing["points_diff"] = standing["points_for"] - standing["points_against"]
         
-        # Sắp xếp theo thứ tự
         standings.sort(key=lambda x: (-x["wins"], -x["points_diff"], -x["points_for"]))
         
         st.session_state.group_standings[group] = standings
@@ -457,10 +489,10 @@ def generate_knockout_matches():
         {"id": "SF2", "team1": first_b, "team2": second_a, "score1": None, "score2": None, "stage": "semi"}
     ]
     
-    # Giữ lại các trận vòng bảng và thêm bán kết
     group_matches = [match for match in st.session_state.matches if match["stage"] == "group"]
     st.session_state.matches = group_matches + semi_matches
     st.session_state.current_stage = 'semi'
+    save_matches_to_db(st.session_state.matches)
 
 def generate_final_matches():
     """Tạo trận chung kết"""
@@ -488,10 +520,10 @@ def generate_final_matches():
         "stage": "final"
     }
     
-    # Giữ lại các trận cũ và thêm chung kết
     other_matches = [match for match in st.session_state.matches if match["stage"] != "final"]
     st.session_state.matches = other_matches + [final_match]
     st.session_state.current_stage = 'final'
+    save_matches_to_db(st.session_state.matches)
 
 def get_ranking_list():
     """Lấy bảng xếp hạng cuối cùng"""
@@ -532,6 +564,7 @@ def reset_scores(stage: Optional[str] = None):
             match["score1"] = None
             match["score2"] = None
     calculate_standings()
+    save_matches_to_db(st.session_state.matches)
     st.experimental_rerun()
 
 def render_match_card(match, is_final=False):
@@ -566,6 +599,7 @@ def render_match_card(match, is_final=False):
         if score1 != (match["score1"] or 0):
             match["score1"] = score1
             calculate_standings()
+            save_matches_to_db(st.session_state.matches)
     with col3:
         st.markdown('<div class="vs-text">-</div>', unsafe_allow_html=True)
     with col4:
@@ -579,6 +613,7 @@ def render_match_card(match, is_final=False):
         if score2 != (match["score2"] or 0):
             match["score2"] = score2
             calculate_standings()
+            save_matches_to_db(st.session_state.matches)
     with col5:
         st.markdown(f"""
         <div class="team-info">
@@ -588,7 +623,7 @@ def render_match_card(match, is_final=False):
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Tính toán bảng xếp hạng
+# Tính toán bảng xếp hạng ban đầu
 calculate_standings()
 
 # Header
@@ -617,7 +652,7 @@ with col3:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Group Stage
+# Vòng bảng
 if st.session_state.current_stage == 'group':
     st.markdown('<div class="group-header"><h3>Bảng A - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
     group_a_matches = [m for m in st.session_state.matches if m.get("group") == "A"]
@@ -671,7 +706,7 @@ if st.session_state.current_stage == 'group':
             generate_knockout_matches()
             st.experimental_rerun()
 
-# Semi-finals
+# Bán kết
 elif st.session_state.current_stage == 'semi':
     st.markdown('<div class="group-header"><h3>⚡ Vòng bán kết</h3></div>', unsafe_allow_html=True)
     semi_matches = [m for m in st.session_state.matches if m["stage"] == "semi"]
@@ -683,7 +718,7 @@ elif st.session_state.current_stage == 'semi':
         generate_final_matches()
         st.experimental_rerun()
 
-# Finals
+# Chung kết
 elif st.session_state.current_stage == 'final':
     st.markdown('<div class="group-header"><h3>🏆 Trận chung kết</h3></div>', unsafe_allow_html=True)
     final_matches = [m for m in st.session_state.matches if m["stage"] == "final"]
