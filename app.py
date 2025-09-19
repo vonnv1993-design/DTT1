@@ -41,8 +41,13 @@ def load_matches_from_db():
 # Custom CSS cho mobile
 st.markdown("""
 <style>
-    /* CSS styles như phần trước */
-    /* ... (bạn có thể giữ nguyên phần CSS đã có) ... */
+    /* CSS styles bạn có thể giữ nguyên hoặc tùy chỉnh */
+    /* Ví dụ: */
+    .main .block-container {
+        max-width: 100%;
+        padding: 1rem 0.5rem;
+    }
+    /* ... thêm CSS khác nếu cần ... */
 </style>
 """, unsafe_allow_html=True)
 
@@ -333,8 +338,8 @@ if st.session_state.current_stage == 'group':
         </div>
         """, unsafe_allow_html=True)
     st.markdown('<div class="standings-header"><h3>Bảng xếp hạng B</h3></div>', unsafe_allow_html=True)
-    for i, standing in enumerate(st.session_state.group_standings["B"]):
-                css_class = "qualified" if i < 2 else "not-qualified"
+        for i, standing in enumerate(st.session_state.group_standings["B"]):
+        css_class = "qualified" if i < 2 else "not-qualified"
         st.markdown(f"""
         <div class="standing-item {css_class}">
             <div class="standing-row">
