@@ -23,76 +23,79 @@ st.markdown("""
         font-family: 'Roboto', sans-serif !important;
     }
     
-    /* Reset và base styles với font size lớn */
+    /* Reset và base styles */
     .main .block-container {
-        padding: 1rem 0.5rem;
-        max-width: 100%;
-        font-size: 18px !important; /* Base font size lớn */
+        padding: 0.5rem;
+        max-width: 480px;
+        margin: 0 auto;
+        font-size: 16px !important;
     }
     
-    /* Mobile-first với font size responsive */
+    /* Mobile-first responsive */
     @media (max-width: 768px) {
         .main .block-container {
-            padding: 0.5rem;
-            font-size: 20px !important; /* Font lớn hơn cho mobile */
+            padding: 0.25rem;
+            font-size: 18px !important;
         }
         
         .stColumns {
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
     }
     
-    /* Login form styles với text lớn */
+    /* Login form styles */
     .login-container {
-        max-width: 450px;
-        margin: 2rem auto;
-        padding: 2rem;
+        max-width: 400px;
+        margin: 1rem auto;
+        padding: 1.5rem;
         background: white;
-        border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        border: 3px solid #e5e7eb;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid #e5e7eb;
     }
     
     .login-header {
         background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
-        padding: 2rem;
-        border-radius: 15px;
+        padding: 1.5rem;
+        border-radius: 12px;
         color: white;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
     
     .login-header h2 {
-        font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+        font-size: clamp(1.5rem, 6vw, 2rem) !important;
         margin: 0 !important;
         font-weight: 700 !important;
     }
     
     .login-header p {
-        font-size: clamp(1.1rem, 4vw, 1.3rem) !important;
-        margin: 1rem 0 0 0 !important;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        margin: 0.5rem 0 0 0 !important;
         opacity: 0.95;
     }
     
-    /* User info bar với text lớn */
+    /* User info bar */
     .user-info {
         background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        padding: 1.2rem 1.5rem;
-        border-radius: 12px;
+        padding: 1rem;
+        border-radius: 10px;
         color: white;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        font-size: clamp(0.9rem, 4vw, 1rem) !important;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
     
     .admin-badge, .referee-badge {
-        padding: 0.4rem 0.8rem;
-        border-radius: 6px;
-        font-size: clamp(0.9rem, 3vw, 1rem) !important;
+        padding: 0.3rem 0.6rem;
+        border-radius: 5px;
+        font-size: clamp(0.75rem, 3vw, 0.85rem) !important;
         font-weight: 700;
-        margin-left: 0.75rem;
+        margin-left: 0.5rem;
     }
     
     .admin-badge {
@@ -105,66 +108,66 @@ st.markdown("""
         color: white;
     }
     
-    /* Header mobile-friendly với text rất lớn */
+    /* Header mobile-friendly */
     .mobile-header {
         background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
-        padding: 2.5rem 1.5rem;
-        border-radius: 15px;
+        padding: 1.5rem 1rem;
+        border-radius: 12px;
         color: white;
         text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 8px 24px rgba(184, 134, 11, 0.3);
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 16px rgba(184, 134, 11, 0.3);
     }
     
     .mobile-header h1 {
         margin: 0;
-        font-size: clamp(2.2rem, 8vw, 3.5rem) !important;
+        font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
         font-weight: 700 !important;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
     
     .mobile-header p {
-        margin: 1rem 0 0 0;
-        font-size: clamp(1.2rem, 5vw, 1.6rem) !important;
+        margin: 0.5rem 0 0 0;
+        font-size: clamp(1rem, 4vw, 1.3rem) !important;
         opacity: 0.95;
         font-weight: 500;
     }
     
-    /* Navigation buttons lớn */
+    /* Navigation buttons */
     .stButton button {
-        font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+        font-size: clamp(0.9rem, 4vw, 1.1rem) !important;
         font-weight: 600 !important;
-        padding: 1rem 1.5rem !important;
-        border-radius: 12px !important;
-        min-height: 60px !important;
+        padding: 0.8rem 1rem !important;
+        border-radius: 10px !important;
+        min-height: 50px !important;
         transition: all 0.3s ease !important;
     }
     
-    /* Group headers với text lớn */
+    /* Group headers */
     .group-header {
         background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        padding: 1.5rem;
-        border-radius: 12px;
+        padding: 1rem;
+        border-radius: 10px;
         color: white;
-        margin: 1.5rem 0;
+        margin: 1rem 0;
         text-align: center;
-        box-shadow: 0 4px 16px rgba(30, 64, 175, 0.2);
+        box-shadow: 0 2px 10px rgba(30, 64, 175, 0.2);
     }
     
     .group-header h3 {
         margin: 0;
-        font-size: clamp(1.4rem, 6vw, 1.8rem) !important;
+        font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
         font-weight: 600 !important;
     }
     
-    /* Match cards tối ưu */
+    /* Match cards compact */
     .match-card {
         background: white;
-        border: 3px solid #e5e7eb;
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.75rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         position: relative;
     }
     
@@ -175,111 +178,118 @@ st.markdown("""
     
     .match-title {
         font-weight: 700 !important;
-        font-size: clamp(1.3rem, 5vw, 1.6rem) !important;
-        margin-bottom: 1rem;
+        font-size: clamp(1rem, 4vw, 1.3rem) !important;
+        margin-bottom: 0.75rem;
         color: #1e40af;
         text-align: center;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
     
-    /* Team info với text lớn */
+    /* Team info compact */
     .team-info {
         text-align: center;
-        padding: 0.75rem;
+        padding: 0.5rem;
     }
     
     .team-name {
         font-weight: 700 !important;
-        font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
-        margin-bottom: 0.5rem;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        margin-bottom: 0.25rem;
         color: #111827;
         line-height: 1.2;
     }
     
     .team-players {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        font-size: clamp(0.8rem, 3.5vw, 1rem) !important;
         color: #6b7280;
         font-style: italic;
         font-weight: 500;
-        line-height: 1.3;
+        line-height: 1.2;
     }
     
-    /* Score inputs - SIÊU TỐI ƯU CHO MOBILE */
+    /* Score inputs - TỐI ƯU CHO 2 KÝ TỰ */
     .stNumberInput > div > div > input {
         text-align: center !important;
-        font-size: clamp(2rem, 8vw, 3rem) !important;
+        font-size: clamp(1.5rem, 6vw, 2rem) !important;
         font-weight: 900 !important;
-        padding: 1.5rem 1rem !important;
-        border-radius: 15px !important;
-        border: 4px solid #d1d5db !important;
+        padding: 0.75rem 0.25rem !important;
+        border-radius: 10px !important;
+        border: 3px solid #d1d5db !important;
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-        min-height: 80px !important;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        min-height: 60px !important;
+        max-width: 80px !important;
+        width: 80px !important;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
         transition: all 0.3s ease !important;
+        margin: 0 auto !important;
     }
     
     .stNumberInput > div > div > input:focus {
         border-color: #1e40af !important;
-        box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
         outline: none !important;
         background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
     }
     
-    /* Readonly score display */
+    /* Readonly score display compact */
     .readonly-score {
         background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%) !important;
-        padding: 1.5rem 1rem !important;
-        border-radius: 15px !important;
+        padding: 0.75rem 0.25rem !important;
+        border-radius: 10px !important;
         text-align: center !important;
         font-weight: 900 !important;
-        font-size: clamp(2rem, 8vw, 3rem) !important;
+        font-size: clamp(1.5rem, 6vw, 2rem) !important;
         color: #374151 !important;
         border: 3px solid #d1d5db !important;
-        min-height: 80px !important;
+        min-height: 60px !important;
+        max-width: 80px !important;
+        width: 80px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        margin: 0 auto !important;
     }
     
-    /* VS text lớn */
+    /* VS text */
     .vs-text {
         text-align: center;
-        font-size: clamp(2rem, 8vw, 3rem) !important;
+        font-size: clamp(1.5rem, 6vw, 2rem) !important;
         font-weight: 900 !important;
         color: #6b7280;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1rem;
+        padding: 0.5rem;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
     
-    /* Standings với text lớn */
+    /* Standings header */
     .standings-header {
         background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
         color: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        margin: 1.5rem 0;
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1rem 0;
         text-align: center;
-        box-shadow: 0 4px 16px rgba(184, 134, 11, 0.2);
+        box-shadow: 0 2px 10px rgba(184, 134, 11, 0.2);
     }
     
     .standings-header h3 {
         margin: 0;
-        font-size: clamp(1.4rem, 6vw, 1.8rem) !important;
+        font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
         font-weight: 600 !important;
     }
     
+    /* Standing items */
     .standing-item {
-        padding: 1.5rem;
-        border-radius: 12px;
-        margin: 1rem 0;
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 0.75rem 0;
         background: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border-left: 6px solid transparent;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid transparent;
     }
     
     .standing-item.qualified {
@@ -296,21 +306,21 @@ st.markdown("""
     }
     
     .standing-team-name {
-        font-size: clamp(1.1rem, 4.5vw, 1.4rem) !important;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
         font-weight: 700 !important;
         margin-bottom: 0.25rem;
         line-height: 1.2;
     }
     
     .standing-team-players {
-        font-size: clamp(0.9rem, 3.5vw, 1.1rem) !important;
+        font-size: clamp(0.8rem, 3vw, 1rem) !important;
         color: #6b7280;
         font-weight: 500;
         margin-bottom: 0.5rem;
     }
     
     .standing-stats {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        font-size: clamp(0.9rem, 3.5vw, 1rem) !important;
         font-weight: 600;
         text-align: right;
     }
@@ -318,131 +328,131 @@ st.markdown("""
     /* Final match special styling */
     .final-match {
         background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        border: 4px solid #b8860b;
-        border-radius: 20px;
-        padding: 2rem;
-        margin: 1.5rem 0;
-        box-shadow: 0 8px 32px rgba(184, 134, 11, 0.2);
+        border: 3px solid #b8860b;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 20px rgba(184, 134, 11, 0.2);
     }
     
-    /* Rankings với text rất lớn */
+    /* Rankings */
     .ranking-item {
         background: linear-gradient(135deg, #fef3c7 0%, #dbeafe 100%);
-        border-radius: 15px;
-        padding: 2rem;
-        margin: 1.5rem 0;
-        border-left: 8px solid #b8860b;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-left: 6px solid #b8860b;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
     }
     
     .ranking-title {
-        font-size: clamp(1.4rem, 6vw, 2rem) !important;
+        font-size: clamp(1.2rem, 5vw, 1.6rem) !important;
         font-weight: 700 !important;
         color: #b8860b;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
     
     .ranking-team-name {
         font-weight: 700 !important;
-        margin-bottom: 0.5rem;
-        font-size: clamp(1.2rem, 5vw, 1.6rem) !important;
+        margin-bottom: 0.25rem;
+        font-size: clamp(1rem, 4vw, 1.3rem) !important;
         color: #111827;
     }
     
     .ranking-team-players {
         color: #6b7280;
-        font-size: clamp(1rem, 4vw, 1.3rem) !important;
+        font-size: clamp(0.9rem, 3.5vw, 1.1rem) !important;
         font-weight: 500;
     }
     
     .ranking-position {
-        font-size: clamp(3rem, 12vw, 5rem) !important;
+        font-size: clamp(2.5rem, 10vw, 4rem) !important;
         font-weight: 900 !important;
         color: #1e40af;
-        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         line-height: 0.9;
     }
     
-    /* Action buttons lớn */
+    /* Action buttons */
     .stButton button[kind="primary"] {
         background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
         color: white !important;
         border: none !important;
-        font-size: clamp(1.2rem, 5vw, 1.6rem) !important;
+        font-size: clamp(1rem, 4vw, 1.3rem) !important;
         font-weight: 700 !important;
-        padding: 1.5rem 2rem !important;
-        border-radius: 15px !important;
-        min-height: 70px !important;
-        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.3) !important;
+        padding: 1rem 1.5rem !important;
+        border-radius: 12px !important;
+        min-height: 60px !important;
+        box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3) !important;
         transition: all 0.3s ease !important;
     }
     
     .stButton button[kind="primary"]:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4) !important;
     }
     
     /* Save indicator */
     .save-indicator {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
-        padding: 1rem 2rem;
-        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
         margin: 1rem 0;
         text-align: center;
-        font-size: clamp(1.1rem, 4vw, 1.3rem) !important;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
         font-weight: 600;
         animation: fadeIn 0.5s ease-in;
-        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
     }
     
     /* Edit indicator */
     .edit-indicator {
         background: #f59e0b;
         color: white;
-        padding: 0.4rem 0.8rem;
-        border-radius: 6px;
-        font-size: clamp(0.8rem, 3vw, 1rem) !important;
+        padding: 0.25rem 0.5rem;
+        border-radius: 5px;
+        font-size: clamp(0.7rem, 2.5vw, 0.8rem) !important;
         font-weight: 600;
-        margin-left: 0.75rem;
+        margin-left: 0.5rem;
     }
     
-    /* Form elements lớn */
+    /* Form elements */
     .stSelectbox > div > div {
-        font-size: clamp(1.1rem, 4vw, 1.3rem) !important;
-        padding: 1rem !important;
-        border-radius: 10px !important;
-        min-height: 60px !important;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        padding: 0.75rem !important;
+        border-radius: 8px !important;
+        min-height: 50px !important;
     }
     
     .stTextInput > div > div > input {
-        font-size: clamp(1.1rem, 4vw, 1.3rem) !important;
-        padding: 1rem 1.25rem !important;
-        border-radius: 10px !important;
-        min-height: 60px !important;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 8px !important;
+        min-height: 50px !important;
     }
     
-    /* Expander với text lớn */
+    /* Expander */
     .streamlit-expanderHeader {
-        font-size: clamp(1.1rem, 4vw, 1.3rem) !important;
+        font-size: clamp(1rem, 4vw, 1.2rem) !important;
         font-weight: 600 !important;
     }
     
-    /* Mobile responsive improvements */
+    /* Mobile responsive adjustments */
     @media (max-width: 640px) {
         .match-card {
-            padding: 1.25rem;
+            padding: 0.75rem;
         }
         
         .mobile-header {
-            padding: 2rem 1rem;
+            padding: 1.25rem 0.75rem;
         }
         
         .user-info {
             flex-direction: column;
-            gap: 1rem;
             text-align: center;
+            gap: 0.75rem;
         }
         
         .ranking-item {
@@ -450,8 +460,14 @@ st.markdown("""
         }
         
         .standing-stats {
-            text-align: left !important;
+            text-align: center !important;
             margin-top: 0.5rem;
+        }
+        
+        .standing-row {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
         }
     }
     
@@ -462,41 +478,35 @@ st.markdown("""
         }
     }
     
-    /* Loading states */
-    .stSpinner {
-        text-align: center;
-        font-size: 1.2rem !important;
-    }
-    
-    /* Metrics large */
+    /* Metrics compact */
     .metric-container {
         text-align: center;
-        padding: 1rem;
+        padding: 0.75rem;
         background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     }
     
     .metric-value {
-        font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
+        font-size: clamp(1.5rem, 6vw, 2rem) !important;
         font-weight: 700 !important;
         color: #1e40af;
     }
     
     .metric-label {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
+        font-size: clamp(0.8rem, 3vw, 1rem) !important;
         color: #6b7280;
         font-weight: 500;
     }
     
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
+        from { opacity: 0; transform: translateY(5px); }
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Dữ liệu người dùng (giữ nguyên)
+# Dữ liệu người dùng
 USERS = {
     "admin": {
         "password": "123456",
@@ -519,9 +529,6 @@ USERS = {
         "permissions": ["view", "edit_group_B"]
     }
 }
-
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
 
 def authenticate(username, password):
     if username in USERS and USERS[username]["password"] == password:
@@ -574,7 +581,7 @@ def show_login():
             help="Nhập mật khẩu (mặc định: 123456)"
         )
         
-        submit = st.form_submit_button("🔓 Đăng nhập", use_container_width=True, type="primary")
+        submit = st.form_submit_button("🔓 ĐĂNG NHẬP", use_container_width=True, type="primary")
         
         if submit:
             if username and password:
@@ -607,7 +614,7 @@ def show_login():
         - Quyền: Chỉ chỉnh sửa các trận ở Bảng B
         """)
 
-# Dữ liệu đội (giữ nguyên)
+# Dữ liệu đội
 teams = [
     {"id": 1, "name": "Đội 1", "players": ["Quân", "Quỳnh"], "group": "A"},
     {"id": 2, "name": "Đội 2", "players": ["Thông", "Linh"], "group": "A"},
@@ -619,7 +626,7 @@ teams = [
     {"id": 8, "name": "Đội 8", "players": ["Trung", "Kiên"], "group": "B"},
 ]
 
-# Khởi tạo session state (giữ nguyên)
+# Khởi tạo session state
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 
@@ -647,7 +654,7 @@ if 'current_stage' not in st.session_state:
 if 'group_standings' not in st.session_state:
     st.session_state.group_standings = {"A": [], "B": []}
 
-# Các hàm tính toán (giữ nguyên logic)
+# Các hàm tính toán
 def calculate_standings():
     for group in ["A", "B"]:
         group_teams = [team for team in teams if team["group"] == group]
@@ -771,7 +778,7 @@ def get_ranking_list():
     ]
 
 def render_match_card(match, is_final=False):
-    """Render match card với input fields siêu tối ưu cho mobile"""
+    """Render match card với input box tối ưu cho nhập 2 ký tự"""
     current_user = st.session_state.current_user
     can_edit = can_edit_match(current_user, match)
     
@@ -781,7 +788,7 @@ def render_match_card(match, is_final=False):
     
     st.markdown(f'<div class="{card_class}">', unsafe_allow_html=True)
     
-    # Match title với thông tin chỉnh sửa
+    # Match title
     title = ""
     if match["stage"] == "group":
         title = f"TRẬN {match['id']}"
@@ -790,15 +797,15 @@ def render_match_card(match, is_final=False):
     elif match["stage"] == "final":
         title = "🏆 CHUNG KẾT"
     
-    # Hiển thị thông tin chỉnh sửa
+    # Thông tin chỉnh sửa
     edit_info = ""
     if match.get("edited_by"):
-        edit_info = f'<span class="edit-indicator">Cập nhật: {match["edited_by"]}</span>'
+        edit_info = f'<span class="edit-indicator">{match["edited_by"]}</span>'
     
     st.markdown(f'<div class="match-title">{title} {edit_info}</div>', unsafe_allow_html=True)
     
-    # Teams and scores với layout tối ưu
-    col1, col2, col3, col4, col5 = st.columns([2.5, 2, 0.5, 2, 2.5])
+    # Layout: Team - Score - VS - Score - Team
+    col1, col2, col3, col4, col5 = st.columns([3, 1.2, 0.6, 1.2, 3])
     
     with col1:
         st.markdown(f"""
@@ -810,15 +817,14 @@ def render_match_card(match, is_final=False):
     
     with col2:
         if can_edit or current_user["role"] == "admin":
-            # Input field siêu lớn cho mobile
             score1 = st.number_input(
-                label="Team 1 Score",
+                label="Tỷ số đội 1",
                 min_value=0,
                 max_value=99,
                 value=match["score1"] or 0,
                 key=f"score1_{match['id']}",
                 label_visibility="collapsed",
-                help="Nhập tỷ số đội 1"
+                help="Nhập tỷ số đội 1 (0-99)"
             )
             if score1 != (match["score1"] or 0):
                 match["score1"] = score1
@@ -826,7 +832,6 @@ def render_match_card(match, is_final=False):
                 match["edited_at"] = datetime.now().isoformat()
                 save_match_data()
         else:
-            # Readonly score display siêu lớn
             st.markdown(f"""
             <div class="readonly-score">
                 {match["score1"] or 0}
@@ -838,15 +843,14 @@ def render_match_card(match, is_final=False):
     
     with col4:
         if can_edit or current_user["role"] == "admin":
-            # Input field siêu lớn cho mobile
             score2 = st.number_input(
-                label="Team 2 Score",
+                label="Tỷ số đội 2",
                 min_value=0,
                 max_value=99,
                 value=match["score2"] or 0,
                 key=f"score2_{match['id']}",
                 label_visibility="collapsed",
-                help="Nhập tỷ số đội 2"
+                help="Nhập tỷ số đội 2 (0-99)"
             )
             if score2 != (match["score2"] or 0):
                 match["score2"] = score2
@@ -854,7 +858,6 @@ def render_match_card(match, is_final=False):
                 match["edited_at"] = datetime.now().isoformat()
                 save_match_data()
         else:
-            # Readonly score display siêu lớn
             st.markdown(f"""
             <div class="readonly-score">
                 {match["score2"] or 0}
@@ -912,7 +915,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Navigation với buttons lớn
+# Navigation
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("📋 VÒNG BẢNG", key="nav_group", use_container_width=True, type="primary" if st.session_state.current_stage == 'group' else "secondary"):
@@ -968,7 +971,7 @@ if current_user["role"] == "admin":
                 st.success("✅ Đã reset toàn bộ dữ liệu!")
                 st.rerun()
 
-# Main content based on stage
+# Main content
 if st.session_state.current_stage == 'group':
     # Group A
     if current_user["role"] == "admin" or current_user.get("group") == "A":
@@ -992,41 +995,48 @@ if st.session_state.current_stage == 'group':
             save_match_data()
             st.markdown('<div class="save-indicator">✅ ĐÃ LƯU TỶ SỐ THÀNH CÔNG!</div>', unsafe_allow_html=True)
     
-    # Standings với text lớn
+    # Standings
     st.markdown("---")
-    col1, col2 = st.columns(2)
     
-    with col1:
-        st.markdown('<div class="standings-header"><h3>BẢNG XẾP HẠNG A</h3></div>', unsafe_allow_html=True)
-        
-        for i, standing in enumerate(st.session_state.group_standings["A"]):
-            css_class = "qualified" if i < 2 else "not-qualified"
-            st.markdown(f"""
-            <div class="standing-item {css_class}">
-                <div class="standing-team-name">{i+1}. {standing["team"]["name"]}</div>
-                <div class="standing-team-players">{" + ".join(standing["team"]["players"])}</div>
+    # Group A Standings
+    st.markdown('<div class="standings-header"><h3>BẢNG XẾP HẠNG A</h3></div>', unsafe_allow_html=True)
+    
+    for i, standing in enumerate(st.session_state.group_standings["A"]):
+        css_class = "qualified" if i < 2 else "not-qualified"
+        st.markdown(f"""
+        <div class="standing-item {css_class}">
+            <div class="standing-row">
+                <div>
+                    <div class="standing-team-name">{i+1}. {standing["team"]["name"]}</div>
+                    <div class="standing-team-players">{" + ".join(standing["team"]["players"])}</div>
+                </div>
                 <div class="standing-stats">
                     {standing["wins"]} THẮNG - {standing["losses"]} THUA<br>
                     HIỆU SỐ: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
     
-    with col2:
-        st.markdown('<div class="standings-header"><h3>BẢNG XẾP HẠNG B</h3></div>', unsafe_allow_html=True)
-        
-        for i, standing in enumerate(st.session_state.group_standings["B"]):
-            css_class = "qualified" if i < 2 else "not-qualified"
-            st.markdown(f"""
-            <div class="standing-item {css_class}">
-                <div class="standing-team-name">{i+1}. {standing["team"]["name"]}</div>
-                <div class="standing-team-players">{" + ".join(standing["team"]["players"])}</div>
+    # Group B Standings
+    st.markdown('<div class="standings-header"><h3>BẢNG XẾP HẠNG B</h3></div>', unsafe_allow_html=True)
+    
+    for i, standing in enumerate(st.session_state.group_standings["B"]):
+        css_class = "qualified" if i < 2 else "not-qualified"
+        st.markdown(f"""
+        <div class="standing-item {css_class}">
+            <div class="standing-row">
+                <div>
+                    <div class="standing-team-name">{i+1}. {standing["team"]["name"]}</div>
+                    <div class="standing-team-players">{" + ".join(standing["team"]["players"])}</div>
+                </div>
                 <div class="standing-stats">
                     {standing["wins"]} THẮNG - {standing["losses"]} THUA<br>
                     HIỆU SỐ: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
     
     # Generate knockout (chỉ admin)
     if current_user["role"] == "admin":
@@ -1057,7 +1067,7 @@ elif st.session_state.current_stage == 'final':
     for match in final_matches:
         render_match_card(match, is_final=True)
     
-    # Final Rankings với text siêu lớn
+    # Final Rankings
     rankings = get_ranking_list()
     if rankings:
         st.markdown("---")
@@ -1077,12 +1087,12 @@ elif st.session_state.current_stage == 'final':
             </div>
             """, unsafe_allow_html=True)
 
-# Footer với text lớn
+# Footer
 st.markdown("---")
 st.markdown(f"""
-<div style="text-align: center; padding: 2rem; color: #6b7280; font-size: clamp(1rem, 4vw, 1.2rem); background: #f9fafb; border-radius: 12px; margin-top: 2rem;">
+<div style="text-align: center; padding: 1.5rem; color: #6b7280; font-size: clamp(0.9rem, 3.5vw, 1.1rem); background: #f9fafb; border-radius: 10px; margin-top: 1.5rem;">
     <p><strong>🏓 GIẢI PICKLEBALL - HỆ THỐNG TRỌNG TÀI ĐIỆN TỬ</strong></p>
-    <p>Phiên bản: 2.1 Mobile-Optimized | Người dùng: <strong>{current_user['name']}</strong></p>
+    <p>Phiên bản: 2.2 Mobile-Optimized | Người dùng: <strong>{current_user['name']}</strong></p>
     <p>📱 Tối ưu hoàn toàn cho điện thoại di động</p>
 </div>
 """, unsafe_allow_html=True)
