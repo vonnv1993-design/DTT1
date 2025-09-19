@@ -10,58 +10,353 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS để tạo màu sắc đẹp
+# Custom CSS cho mobile
 st.markdown("""
 <style>
-    .main-header {
-        background: linear-gradient(90deg, #b8860b, #daa520);
-        padding: 2rem;
-        border-radius: 10px;
+    /* Reset và base styles */
+    .main .block-container {
+        padding: 1rem 0.5rem;
+        max-width: 100%;
+    }
+    
+    /* Mobile-first approach */
+    @media (max-width: 768px) {
+        .main .block-container {
+            padding: 0.5rem;
+        }
+        
+        .stColumns {
+            gap: 0.5rem;
+        }
+        
+        .stColumn {
+            min-width: unset !important;
+        }
+    }
+    
+    /* Header mobile-friendly */
+    .mobile-header {
+        background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+        padding: 1.5rem 1rem;
+        border-radius: 12px;
         color: white;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
     }
     
-    .group-header {
-        background: linear-gradient(90deg, #1e40af, #3b82f6);
-        padding: 1rem;
-        border-radius: 8px;
-        color: white;
-        margin: 1rem 0;
-    }
-    
-    .match-card {
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        background: white;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .standings-card {
-        border-radius: 8px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-    
-    .qualified {
-        background: linear-gradient(90deg, #dbeafe, #bfdbfe);
-        color: #1e40af;
+    .mobile-header h1 {
+        margin: 0;
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
         font-weight: bold;
     }
     
-    .not-qualified {
-        background: #f3f4f6;
-        color: #374151;
+    .mobile-header p {
+        margin: 0.5rem 0 0 0;
+        font-size: clamp(0.875rem, 3vw, 1rem);
+        opacity: 0.9;
     }
     
-    .ranking-card {
-        background: linear-gradient(90deg, #fef3c7, #dbeafe);
+    /* Navigation buttons */
+    .nav-container {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .nav-button {
+        flex: 1;
+        min-width: 120px;
+        padding: 12px 8px;
         border-radius: 8px;
+        text-align: center;
+        font-weight: 600;
+        font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .nav-button.active {
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        color: white;
+        box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
+    }
+    
+    .nav-button.inactive {
+        background: white;
+        color: #1e40af;
+        border-color: #1e40af;
+    }
+    
+    /* Group headers */
+    .group-header {
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
         padding: 1rem;
+        border-radius: 10px;
+        color: white;
+        margin: 1rem 0;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(30, 64, 175, 0.2);
+    }
+    
+    .group-header h3 {
+        margin: 0;
+        font-size: clamp(1rem, 4vw, 1.25rem);
+    }
+    
+    /* Match cards mobile-optimized */
+    .match-card {
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.75rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .match-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    .match-title {
+        font-weight: bold;
+        font-size: clamp(0.875rem, 3vw, 1rem);
+        margin-bottom: 0.75rem;
+        color: #1e40af;
+        text-align: center;
+    }
+    
+    .team-info {
+        text-align: center;
+        padding: 0.5rem;
+    }
+    
+    .team-name {
+        font-weight: bold;
+        font-size: clamp(0.875rem, 3vw, 1rem);
+        margin-bottom: 0.25rem;
+        color: #111827;
+    }
+    
+    .team-players {
+        font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+        color: #6b7280;
+        font-style: italic;
+    }
+    
+    /* Score inputs mobile-friendly */
+    .score-input {
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 1.25rem !important;
+        font-weight: bold !important;
+        padding: 0.75rem !important;
+        border-radius: 8px !important;
+        border: 2px solid #d1d5db !important;
+        background: #f9fafb !important;
+        min-height: 48px !important; /* Touch-friendly minimum */
+    }
+    
+    .score-input:focus {
+        border-color: #1e40af !important;
+        box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1) !important;
+        outline: none !important;
+    }
+    
+    .vs-text {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+    }
+    
+    /* Standings mobile-optimized */
+    .standings-header {
+        background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+        text-align: center;
+    }
+    
+    .standings-header h3 {
+        margin: 0;
+        font-size: clamp(1rem, 4vw, 1.25rem);
+    }
+    
+    .standing-item {
+        padding: 1rem;
+        border-radius: 10px;
         margin: 0.5rem 0;
-        border-left: 4px solid #b8860b;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .standing-item.qualified {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #1e40af;
+        font-weight: bold;
+        border-left: 4px solid #1e40af;
+    }
+    
+    .standing-item.not-qualified {
+        background: #f3f4f6;
+        color: #374151;
+        border-left: 4px solid #d1d5db;
+    }
+    
+    .standing-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .standing-info {
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    .standing-stats {
+        text-align: right;
+        font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+        white-space: nowrap;
+    }
+    
+    /* Final match special styling */
+    .final-match {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border: 3px solid #b8860b;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 16px rgba(184, 134, 11, 0.2);
+    }
+    
+    /* Rankings */
+    .ranking-item {
+        background: linear-gradient(135deg, #fef3c7 0%, #dbeafe 100%);
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 0.75rem 0;
+        border-left: 5px solid #b8860b;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .ranking-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .ranking-info {
+        flex: 1;
+    }
+    
+    .ranking-title {
+        font-size: clamp(1rem, 4vw, 1.25rem);
+        font-weight: bold;
+        color: #b8860b;
+        margin-bottom: 0.5rem;
+    }
+    
+    .ranking-team {
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+        font-size: clamp(0.875rem, 3vw, 1rem);
+    }
+    
+    .ranking-players {
+        color: #6b7280;
+        font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+    }
+    
+    .ranking-position {
+        font-size: clamp(2rem, 8vw, 3rem);
+        font-weight: bold;
+        color: #1e40af;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Action button */
+    .action-button {
+        width: 100%;
+        padding: 1rem;
+        font-size: clamp(1rem, 3vw, 1.125rem);
+        font-weight: bold;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 56px; /* Touch-friendly */
+    }
+    
+    .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(30, 64, 175, 0.4);
+    }
+    
+    /* Mobile responsive adjustments */
+    @media (max-width: 640px) {
+        .match-card {
+            padding: 0.75rem;
+        }
+        
+        .standing-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+        }
+        
+        .standing-stats {
+            text-align: left;
+            width: 100%;
+        }
+        
+        .ranking-row {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.75rem;
+        }
+    }
+    
+    /* Touch improvements */
+    @media (hover: none) and (pointer: coarse) {
+        .match-card:hover {
+            transform: none;
+        }
+        
+        .action-button:hover {
+            transform: none;
+        }
+    }
+    
+    /* Accessibility improvements */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -231,266 +526,208 @@ def get_ranking_list():
         {"position": 3, "team": sf2_loser, "title": "🥉 Đồng giải 3"},
     ]
 
+def render_match_card(match, is_final=False):
+    """Render match card with mobile-optimized layout"""
+    card_class = "final-match" if is_final else "match-card"
+    
+    st.markdown(f'<div class="{card_class}">', unsafe_allow_html=True)
+    
+    # Match title
+    title = ""
+    if match["stage"] == "group":
+        title = f"Trận {match['id']}"
+    elif match["stage"] == "semi":
+        title = "Bán kết 1" if match["id"] == "SF1" else "Bán kết 2"
+    elif match["stage"] == "final":
+        title = "🏆 Chung kết"
+    
+    st.markdown(f'<div class="match-title">{title}</div>', unsafe_allow_html=True)
+    
+    # Teams and scores
+    col1, col2, col3, col4, col5 = st.columns([3, 1.5, 0.5, 1.5, 3])
+    
+    with col1:
+        st.markdown(f"""
+        <div class="team-info">
+            <div class="team-name">{match['team1']['name']}</div>
+            <div class="team-players">{' + '.join(match['team1']['players'])}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        score1 = st.number_input(
+            label="Score 1",
+            min_value=0,
+            value=match["score1"] or 0,
+            key=f"score1_{match['id']}",
+            label_visibility="collapsed"
+        )
+        if score1 != (match["score1"] or 0):
+            match["score1"] = score1
+    
+    with col3:
+        st.markdown('<div class="vs-text">-</div>', unsafe_allow_html=True)
+    
+    with col4:
+        score2 = st.number_input(
+            label="Score 2",
+            min_value=0,
+            value=match["score2"] or 0,
+            key=f"score2_{match['id']}",
+            label_visibility="collapsed"
+        )
+        if score2 != (match["score2"] or 0):
+            match["score2"] = score2
+    
+    with col5:
+        st.markdown(f"""
+        <div class="team-info">
+            <div class="team-name">{match['team2']['name']}</div>
+            <div class="team-players">{' + '.join(match['team2']['players'])}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
 # Tính toán bảng xếp hạng
 calculate_standings()
 
 # Header
 st.markdown("""
-<div class="main-header">
+<div class="mobile-header">
     <h1>🏓 Giải Pickleball</h1>
     <p>Hệ thống xếp hạng tự động</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Navigation
+st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
+
 with col1:
-    if st.button("Vòng bảng", use_container_width=True, type="primary" if st.session_state.current_stage == 'group' else "secondary"):
+    if st.button("Vòng bảng", key="nav_group", use_container_width=True):
         st.session_state.current_stage = 'group'
 
 with col2:
-    if st.button("Bán kết", use_container_width=True, type="primary" if st.session_state.current_stage == 'semi' else "secondary"):
+    if st.button("Bán kết", key="nav_semi", use_container_width=True):
         st.session_state.current_stage = 'semi'
 
 with col3:
-    if st.button("Chung kết", use_container_width=True, type="primary" if st.session_state.current_stage == 'final' else "secondary"):
+    if st.button("Chung kết", key="nav_final", use_container_width=True):
         st.session_state.current_stage = 'final'
 
-st.markdown("---")
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Group Stage
 if st.session_state.current_stage == 'group':
-    col1, col2 = st.columns(2)
+    # Group A
+    st.markdown('<div class="group-header"><h3>Bảng A - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
     
-    with col1:
-        st.markdown('<div class="group-header"><h3>Bảng A - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
-        
-        group_a_matches = [match for match in st.session_state.matches if match.get("group") == "A"]
-        for i, match in enumerate(group_a_matches):
-            st.markdown('<div class="match-card">', unsafe_allow_html=True)
-            st.write(f"**{match['id']}**")
-            
-            col_team1, col_score1, col_vs, col_score2, col_team2 = st.columns([3, 1, 1, 1, 3])
-            
-            with col_team1:
-                st.write(f"**{match['team1']['name']}**")
-                st.write(f"*{' + '.join(match['team1']['players'])}*")
-            
-            with col_score1:
-                score1 = st.number_input("", min_value=0, value=match["score1"] or 0, key=f"score1_{match['id']}")
-                if score1 != (match["score1"] or 0):
-                    match["score1"] = score1
-            
-            with col_vs:
-                st.write("**-**")
-            
-            with col_score2:
-                score2 = st.number_input("", min_value=0, value=match["score2"] or 0, key=f"score2_{match['id']}")
-                if score2 != (match["score2"] or 0):
-                    match["score2"] = score2
-            
-            with col_team2:
-                st.write(f"**{match['team2']['name']}**")
-                st.write(f"*{' + '.join(match['team2']['players'])}*")
-            
-            st.markdown('</div>', unsafe_allow_html=True)
+    group_a_matches = [match for match in st.session_state.matches if match.get("group") == "A"]
+    for match in group_a_matches:
+        render_match_card(match)
     
-    with col2:
-        st.markdown('<div class="group-header"><h3>Bảng B - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
-        
-        group_b_matches = [match for match in st.session_state.matches if match.get("group") == "B"]
-        for i, match in enumerate(group_b_matches):
-            st.markdown('<div class="match-card">', unsafe_allow_html=True)
-            st.write(f"**{match['id']}**")
-            
-            col_team1, col_score1, col_vs, col_score2, col_team2 = st.columns([3, 1, 1, 1, 3])
-            
-            with col_team1:
-                st.write(f"**{match['team1']['name']}**")
-                st.write(f"*{' + '.join(match['team1']['players'])}*")
-            
-            with col_score1:
-                score1 = st.number_input("", min_value=0, value=match["score1"] or 0, key=f"score1_{match['id']}")
-                if score1 != (match["score1"] or 0):
-                    match["score1"] = score1
-            
-            with col_vs:
-                st.write("**-**")
-            
-            with col_score2:
-                score2 = st.number_input("", min_value=0, value=match["score2"] or 0, key=f"score2_{match['id']}")
-                if score2 != (match["score2"] or 0):
-                    match["score2"] = score2
-            
-            with col_team2:
-                st.write(f"**{match['team2']['name']}**")
-                st.write(f"*{' + '.join(match['team2']['players'])}*")
-            
-            st.markdown('</div>', unsafe_allow_html=True)
+    # Group B
+    st.markdown('<div class="group-header"><h3>Bảng B - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
+    
+    group_b_matches = [match for match in st.session_state.matches if match.get("group") == "B"]
+    for match in group_b_matches:
+        render_match_card(match)
     
     # Standings
     st.markdown("---")
-    col1, col2 = st.columns(2)
     
-    with col1:
-        st.markdown("""
-        <div style="background: linear-gradient(90deg, #b8860b, #daa520); color: white; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-            <h3>Bảng xếp hạng A</h3>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        for i, standing in enumerate(st.session_state.group_standings["A"]):
-            css_class = "qualified" if i < 2 else "not-qualified"
-            st.markdown(f"""
-            <div class="standings-card {css_class}">
-                <div style="display: flex; justify-content: space-between;">
-                    <div>
-                        <strong>{i+1}. {standing["team"]["name"]}</strong><br>
-                        <small>{" + ".join(standing["team"]["players"])}</small>
-                    </div>
-                    <div style="text-align: right;">
-                        <div>{standing["wins"]}T - {standing["losses"]}B</div>
-                        <small>HS: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}</small>
-                    </div>
+    # Group A Standings
+    st.markdown('<div class="standings-header"><h3>Bảng xếp hạng A</h3></div>', unsafe_allow_html=True)
+    
+    for i, standing in enumerate(st.session_state.group_standings["A"]):
+        css_class = "qualified" if i < 2 else "not-qualified"
+        st.markdown(f"""
+        <div class="standing-item {css_class}">
+            <div class="standing-row">
+                <div class="standing-info">
+                    <div class="team-name">{i+1}. {standing["team"]["name"]}</div>
+                    <div class="team-players">{" + ".join(standing["team"]["players"])}</div>
+                </div>
+                <div class="standing-stats">
+                    <div>{standing["wins"]}T - {standing["losses"]}B</div>
+                    <div>HS: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}</div>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div style="background: linear-gradient(90deg, #b8860b, #daa520); color: white; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-            <h3>Bảng xếp hạng B</h3>
         </div>
         """, unsafe_allow_html=True)
-        
-        for i, standing in enumerate(st.session_state.group_standings["B"]):
-            css_class = "qualified" if i < 2 else "not-qualified"
-            st.markdown(f"""
-            <div class="standings-card {css_class}">
-                <div style="display: flex; justify-content: space-between;">
-                    <div>
-                        <strong>{i+1}. {standing["team"]["name"]}</strong><br>
-                        <small>{" + ".join(standing["team"]["players"])}</small>
-                    </div>
-                    <div style="text-align: right;">
-                        <div>{standing["wins"]}T - {standing["losses"]}B</div>
-                        <small>HS: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}</small>
-                    </div>
+    
+    # Group B Standings
+    st.markdown('<div class="standings-header"><h3>Bảng xếp hạng B</h3></div>', unsafe_allow_html=True)
+    
+    for i, standing in enumerate(st.session_state.group_standings["B"]):
+        css_class = "qualified" if i < 2 else "not-qualified"
+        st.markdown(f"""
+        <div class="standing-item {css_class}">
+            <div class="standing-row">
+                <div class="standing-info">
+                    <div class="team-name">{i+1}. {standing["team"]["name"]}</div>
+                    <div class="team-players">{" + ".join(standing["team"]["players"])}</div>
+                </div>
+                <div class="standing-stats">
+                    <div>{standing["wins"]}T - {standing["losses"]}B</div>
+                    <div>HS: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}</div>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
     
     # Button to generate knockout
     if (len(st.session_state.group_standings["A"]) >= 2 and 
         len(st.session_state.group_standings["B"]) >= 2):
-        st.markdown("---")
-        if st.button("Tạo lịch vòng loại trực tiếp", use_container_width=True, type="primary"):
+        if st.button("🚀 Tạo lịch vòng loại trực tiếp", key="generate_knockout", use_container_width=True, type="primary"):
             generate_knockout_matches()
             st.rerun()
 
 # Semi-finals
 elif st.session_state.current_stage == 'semi':
-    st.markdown('<div class="group-header"><h3>Vòng bán kết</h3></div>', unsafe_allow_html=True)
+    st.markdown('<div class="group-header"><h3>⚡ Vòng bán kết</h3></div>', unsafe_allow_html=True)
     
     semi_matches = [match for match in st.session_state.matches if match["stage"] == "semi"]
     for match in semi_matches:
-        st.markdown('<div class="match-card">', unsafe_allow_html=True)
-        title = "Bán kết 1" if match["id"] == "SF1" else "Bán kết 2"
-        st.write(f"**{title}**")
-        
-        col_team1, col_score1, col_vs, col_score2, col_team2 = st.columns([3, 1, 1, 1, 3])
-        
-        with col_team1:
-            st.write(f"**{match['team1']['name']}**")
-            st.write(f"*{' + '.join(match['team1']['players'])}*")
-        
-        with col_score1:
-            score1 = st.number_input("", min_value=0, value=match["score1"] or 0, key=f"score1_{match['id']}")
-            if score1 != (match["score1"] or 0):
-                match["score1"] = score1
-        
-        with col_vs:
-            st.write("**-**")
-        
-        with col_score2:
-            score2 = st.number_input("", min_value=0, value=match["score2"] or 0, key=f"score2_{match['id']}")
-            if score2 != (match["score2"] or 0):
-                match["score2"] = score2
-        
-        with col_team2:
-            st.write(f"**{match['team2']['name']}**")
-            st.write(f"*{' + '.join(match['team2']['players'])}*")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        render_match_card(match)
     
-    st.markdown("---")
-    if st.button("Tạo lịch chung kết", use_container_width=True, type="primary"):
+    if st.button("🏆 Tạo lịch chung kết", key="generate_final", use_container_width=True, type="primary"):
         generate_final_matches()
         st.rerun()
 
 # Finals
 elif st.session_state.current_stage == 'final':
-    st.markdown("""
-    <div style="background: linear-gradient(90deg, #b8860b, #daa520); color: white; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-        <h3>Trận chung kết</h3>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="group-header"><h3>🏆 Trận chung kết</h3></div>', unsafe_allow_html=True)
     
     final_matches = [match for match in st.session_state.matches if match["stage"] == "final"]
     for match in final_matches:
-        st.markdown("""
-        <div style="border: 3px solid #b8860b; background: linear-gradient(90deg, #fef3c7, #fde68a); border-radius: 8px; padding: 1rem; margin: 0.5rem 0;">
-        """, unsafe_allow_html=True)
-        
-        st.write("**Chung kết**")
-        
-        col_team1, col_score1, col_vs, col_score2, col_team2 = st.columns([3, 1, 1, 1, 3])
-        
-        with col_team1:
-            st.write(f"**{match['team1']['name']}**")
-            st.write(f"*{' + '.join(match['team1']['players'])}*")
-        
-        with col_score1:
-            score1 = st.number_input("", min_value=0, value=match["score1"] or 0, key=f"score1_{match['id']}")
-            if score1 != (match["score1"] or 0):
-                match["score1"] = score1
-        
-        with col_vs:
-            st.write("**-**")
-        
-        with col_score2:
-            score2 = st.number_input("", min_value=0, value=match["score2"] or 0, key=f"score2_{match['id']}")
-            if score2 != (match["score2"] or 0):
-                match["score2"] = score2
-        
-        with col_team2:
-            st.write(f"**{match['team2']['name']}**")
-            st.write(f"*{' + '.join(match['team2']['players'])}*")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        render_match_card(match, is_final=True)
     
     # Final Rankings
     rankings = get_ranking_list()
     if rankings:
         st.markdown("---")
-        st.markdown("""
-        <div style="background: linear-gradient(90deg, #b8860b, #daa520); color: white; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-            <h3>🏆 Kết quả cuối cùng</h3>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="standings-header"><h3>🎖️ Kết quả cuối cùng</h3></div>', unsafe_allow_html=True)
         
         for ranking in rankings:
             st.markdown(f"""
-            <div class="ranking-card">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="font-size: 1.2em; font-weight: bold; color: #b8860b;">{ranking["title"]}</div>
-                        <div style="font-weight: bold; margin: 0.5rem 0;">{ranking["team"]["name"]}</div>
-                        <div style="color: #6b7280; font-size: 0.9em;">{" + ".join(ranking["team"]["players"])}</div>
+            <div class="ranking-item">
+                <div class="ranking-row">
+                    <div class="ranking-info">
+                        <div class="ranking-title">{ranking["title"]}</div>
+                        <div class="ranking-team">{ranking["team"]["name"]}</div>
+                        <div class="ranking-players">{" + ".join(ranking["team"]["players"])}</div>
                     </div>
-                    <div style="font-size: 3em; font-weight: bold; color: #1e40af;">
-                        #{ranking["position"]}
-                    </div>
+                    <div class="ranking-position">#{ranking["position"]}</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
+
+# Footer
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; padding: 1rem; color: #6b7280; font-size: 0.875rem;">
+    <p>🏓 Giải Pickleball - Hệ thống quản lý giải đấu</p>
+</div>
+""", unsafe_allow_html=True)
