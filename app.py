@@ -351,8 +351,115 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Navigation
+# Navigation
 st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("Vòng bảng", key="nav_group", use_container_width=True):
-        st.session_state
+        st.session_state.current_stage = 'group'
+with col2:
+    if st.button("Bán kết", key="nav_semi", use_container_width=True):
+        st.session_state.current_stage = 'semi'
+with col3:
+    if st.button("Chung kết", key="nav_final", use_container_width=True):
+        st.session_state.current_stage = 'final'
+st.markdown('</div>', unsafe_allow_html=True)
+
+if st.session_state.current_stage == 'group':
+    st.markdown('<div class="group-header"><h3>Bảng A - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
+    group_a_matches = [m for m in st.session_state.matches if m.get("group") == "A"]
+    for match in group_a_matches:
+        render_match_card(match)
+    st.markdown('<div class="group-header"><h3>Bảng B - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
+    group_b_matches = [m for m in st.session_state.matches if m.get("group") == "B"]
+    for match in group_b_matches:
+        render_match_card(match)
+    if st.button("🔄 Reset tỷ số vòng bảng", key="reset_group", use_container_width=True):
+        reset_scores(stage="group")
+
+    st.markdown("---")
+    st.markdown('<div class="standings-header"><h3>Bảng xếp hạng A</h3></div>', unsafe_allow_html=True)
+    for i, standing in enumerate(st.session_state.group_standings["A"]):
+        css_class = "qualified" if i < 2 else "not-qualified"
+        st.markdown(f"""
+        <div class="standing-item {css_class}">
+            <div class="standing-row">
+                <div class="standing-info">
+                    <div class="team-name">{i+1}. {standing["team"]["name"]}</div>
+                    <div class="team-players">{" + ".join(standing["team"]["players"])}</div>
+                </div>
+                <div class="standing-stats">
+                    <div>{standing["wins"]}T - {standing["losses"]}B</div>
+                    <div>HS: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('<div class="standings-header"><h3>Bảng xếp hạng B</h3></div>', unsafe_allow_html=True)
+    for i, standing in enumerate(st.session_state.group_standings["B"]):
+        css_class = "qualified" if i < 2 else "not-qualified"
+        st.markdown(f"""
+        <div class="standing-item {css_class}">
+            <div class="standing-row">
+                <div class="standing-info">
+                    <div class="team-name">{i+1}. {standing["team"]["name"]}</div>
+                    <div class="team-players">{" + ".join(standing["team"]["players"])}</div>
+                </div>
+                <div class="standing-stats">
+                    <div>{standing["wins"]}T - {standing["losses"]}B</div>
+                    <div>HS: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    if (len(st.session_state.group_standings["A"]) >= 2 and 
+        len(st.session_state.group_standings["B"]) >= 2):
+        if st.button("🚀 Tạo lịch vòng loại trực tiếp", key="generate_knockout", use_container_width=True, type="primary"):
+            generate_knockout_matches()
+            st.experimental_rerun()
+
+elif st.session_state.current_stage == 'semi':
+    st.markdown('<div class="group-header"><h3>⚡ Vòng bán kết</h3></div>', unsafe_allow_html=True)
+    semi_matches = [m for m in st.session_state.matches if m["stage"] == "semi"]
+    for match in semi_matches:
+        render_match_card(match)
+    if st.button("🔄 Reset tỷ số bán kết", key="reset_semi", use_container_width=True):
+        reset_scores(stage="semi")
+    if st.button("🏆 Tạo lịch chung kết", key="generate_final", use_container_width=True, type="primary"):
+        generate_final_matches()
+        st.experimental_rerun()
+
+elif st.session_state.current_stage == 'final':
+    st.markdown('<div class="group-header"><h3>🏆 Trận chung kết</h3></div>', unsafe_allow_html=True)
+    final_matches = [m for m in st.session_state.matches if m["stage"] == "final"]
+    for match in final_matches:
+        render_match_card(match, is_final=True)
+    if st.button("🔄 Reset tỷ số chung kết", key="reset_final", use_container_width=True):
+        reset_scores(stage="final")
+    rankings = get_ranking_list()
+    if rankings:
+        st.markdown("---")
+        st.markdown('<div class="standings-header"><h3>🎖️ Kết quả cuối cùng</h3></div>', unsafe_allow_html=True)
+        for ranking in rankings:
+            st.markdown(f"""
+            <div class="ranking-item">
+                <div class="ranking-row">
+                    <div class="ranking-info">
+                        <div class="ranking-title">{ranking["title"]}</div>
+                        <div class="ranking-team">{ranking["team"]["name"]}</div>
+                        <div class="ranking-players">{" + ".join(ranking["team"]["players"])}</div>
+                    </div>
+                    <div class="ranking-position">#{ranking["position"]}</div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+# Footer
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; padding: 1rem; color: #6b7280; font-size: 0.875rem;">
+    <p>🏓 Giải Pickleball - Hệ thống quản lý giải đấu</p>
+</div>
+""", unsafe_allow_html=True)
