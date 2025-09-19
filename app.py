@@ -7,168 +7,213 @@ from typing import List, Dict, Optional
 
 # Cấu hình trang
 st.set_page_config(
-    page_title="Giải Pickleball - Hệ thống Trọng tài",
+    page_title="Giải Pickleball",
     page_icon="🏓",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS với typography tối ưu cho mobile
+# Custom CSS hoàn toàn responsive cho mobile
 st.markdown("""
 <style>
-    /* Import font lớn và rõ nét */
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+    /* Import font tối ưu */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
     * {
-        font-family: 'Roboto', sans-serif !important;
+        font-family: 'Inter', sans-serif !important;
+        box-sizing: border-box;
     }
     
-    /* Reset và base styles */
+    /* Hide Streamlit elements */
+    #MainMenu {visibility: hidden;}
+    .stDeployButton {display:none;}
+    footer {visibility: hidden;}
+    .stActionButton {display:none;}
+    
+    /* Mobile-first container */
     .main .block-container {
-        padding: 0.5rem;
-        max-width: 480px;
-        margin: 0 auto;
-        font-size: 16px !important;
+        padding: 0.5rem !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+        margin: 0 !important;
     }
     
-    /* Mobile-first responsive */
-    @media (max-width: 768px) {
+    /* Responsive breakpoints */
+    @media (min-width: 768px) {
         .main .block-container {
-            padding: 0.25rem;
-            font-size: 18px !important;
-        }
-        
-        .stColumns {
-            gap: 0.5rem;
+            max-width: 500px !important;
+            margin: 0 auto !important;
+            padding: 1rem !important;
         }
     }
     
-    /* Login form styles */
+    /* Remove default Streamlit spacing */
+    .stVerticalBlock > [data-testid="stVerticalBlockBorderWrapper"] {
+        gap: 0.5rem !important;
+    }
+    
+    /* Login styles */
     .login-container {
-        max-width: 400px;
-        margin: 1rem auto;
-        padding: 1.5rem;
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        border: 2px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
     }
     
     .login-header {
-        background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
-        padding: 1.5rem;
+        background: linear-gradient(135deg, #b59410 0%, #eab308 100%);
+        padding: 2rem 1rem;
         border-radius: 12px;
         color: white;
         text-align: center;
         margin-bottom: 1.5rem;
     }
     
-    .login-header h2 {
-        font-size: clamp(1.5rem, 6vw, 2rem) !important;
+    .login-header h1 {
+        font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
         margin: 0 !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.025em;
     }
     
     .login-header p {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
-        margin: 0.5rem 0 0 0 !important;
-        opacity: 0.95;
-    }
-    
-    /* User info bar */
-    .user-info {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        padding: 1rem;
-        border-radius: 10px;
-        color: white;
-        margin-bottom: 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: clamp(0.9rem, 4vw, 1rem) !important;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-    
-    .admin-badge, .referee-badge {
-        padding: 0.3rem 0.6rem;
-        border-radius: 5px;
-        font-size: clamp(0.75rem, 3vw, 0.85rem) !important;
-        font-weight: 700;
-        margin-left: 0.5rem;
-    }
-    
-    .admin-badge {
-        background: #dc2626;
-        color: white;
-    }
-    
-    .referee-badge {
-        background: #059669;
-        color: white;
-    }
-    
-    /* Header mobile-friendly */
-    .mobile-header {
-        background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
-        padding: 1.5rem 1rem;
-        border-radius: 12px;
-        color: white;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 16px rgba(184, 134, 11, 0.3);
-    }
-    
-    .mobile-header h1 {
-        margin: 0;
-        font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
-        font-weight: 700 !important;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-    
-    .mobile-header p {
-        margin: 0.5rem 0 0 0;
-        font-size: clamp(1rem, 4vw, 1.3rem) !important;
+        font-size: clamp(1rem, 4vw, 1.25rem) !important;
+        margin: 0.75rem 0 0 0 !important;
         opacity: 0.95;
         font-weight: 500;
     }
     
-    /* Navigation buttons */
-    .stButton button {
-        font-size: clamp(0.9rem, 4vw, 1.1rem) !important;
-        font-weight: 600 !important;
-        padding: 0.8rem 1rem !important;
-        border-radius: 10px !important;
-        min-height: 50px !important;
-        transition: all 0.3s ease !important;
+    /* User info bar responsive */
+    .user-info {
+        background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+        padding: 1rem;
+        border-radius: 12px;
+        color: white;
+        margin-bottom: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: clamp(0.875rem, 4vw, 1rem) !important;
     }
     
-    /* Group headers */
-    .group-header {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    @media (max-width: 480px) {
+        .user-info {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+    
+    .role-badge {
+        padding: 0.375rem 0.75rem;
+        border-radius: 6px;
+        font-size: clamp(0.75rem, 3vw, 0.875rem) !important;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    
+    .admin-badge {
+        background: #dc2626;
+    }
+    
+    .referee-badge {
+        background: #059669;
+    }
+    
+    /* Main header responsive */
+    .app-header {
+        background: linear-gradient(135deg, #b59410 0%, #eab308 100%);
+        padding: clamp(1.5rem, 5vw, 2.5rem) 1rem;
+        border-radius: 16px;
+        color: white;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 25px rgba(181, 148, 16, 0.25);
+    }
+    
+    .app-header h1 {
+        margin: 0;
+        font-size: clamp(2rem, 8vw, 3rem) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.025em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .app-header p {
+        margin: 0.75rem 0 0 0;
+        font-size: clamp(1.125rem, 4vw, 1.5rem) !important;
+        opacity: 0.95;
+        font-weight: 600;
+    }
+    
+    /* Navigation responsive */
+    .nav-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .stButton button {
+        font-size: clamp(0.875rem, 3.5vw, 1.125rem) !important;
+        font-weight: 700 !important;
+        padding: 1rem 0.5rem !important;
+        border-radius: 10px !important;
+        min-height: 56px !important;
+        width: 100% !important;
+        transition: all 0.2s ease !important;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+    
+    .stButton button[kind="primary"] {
+        background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%) !important;
+        border: none !important;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3) !important;
+    }
+    
+    .stButton button[kind="secondary"] {
+        background: white !important;
+        border: 2px solid #1d4ed8 !important;
+        color: #1d4ed8 !important;
+    }
+    
+    /* Section headers */
+    .section-header {
+        background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
         padding: 1rem;
-        border-radius: 10px;
+        border-radius: 12px;
         color: white;
         margin: 1rem 0;
         text-align: center;
-        box-shadow: 0 2px 10px rgba(30, 64, 175, 0.2);
+        box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
     }
     
-    .group-header h3 {
+    .section-header h3 {
         margin: 0;
-        font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
-        font-weight: 600 !important;
+        font-size: clamp(1.25rem, 5vw, 1.625rem) !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.025em;
     }
     
-    /* Match cards compact */
+    /* Match cards mobile-first */
     .match-card {
         background: white;
         border: 2px solid #e5e7eb;
         border-radius: 12px;
         padding: 1rem;
         margin: 0.75rem 0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .match-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
     .match-card.readonly {
@@ -176,84 +221,107 @@ st.markdown("""
         border-color: #d1d5db;
     }
     
-    .match-title {
-        font-weight: 700 !important;
-        font-size: clamp(1rem, 4vw, 1.3rem) !important;
-        margin-bottom: 0.75rem;
-        color: #1e40af;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+    .match-card.final-match {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border: 3px solid #b59410;
+        box-shadow: 0 6px 20px rgba(181, 148, 16, 0.2);
     }
     
-    /* Team info compact */
-    .team-info {
+    /* Match title */
+    .match-title {
+        font-weight: 800 !important;
+        font-size: clamp(1.125rem, 4.5vw, 1.375rem) !important;
+        margin-bottom: 1rem;
+        color: #1d4ed8;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Edit indicator */
+    .edit-badge {
+        background: #f59e0b;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: clamp(0.75rem, 3vw, 0.875rem) !important;
+        font-weight: 600;
+        margin-left: 0.5rem;
+        display: inline-block;
+    }
+    
+    /* Team info mobile responsive */
+    .team-section {
         text-align: center;
         padding: 0.5rem;
     }
     
     .team-name {
-        font-weight: 700 !important;
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
-        margin-bottom: 0.25rem;
+        font-weight: 800 !important;
+        font-size: clamp(1.125rem, 4.5vw, 1.375rem) !important;
+        margin-bottom: 0.375rem;
         color: #111827;
-        line-height: 1.2;
+        line-height: 1.1;
     }
     
     .team-players {
-        font-size: clamp(0.8rem, 3.5vw, 1rem) !important;
+        font-size: clamp(0.875rem, 3.5vw, 1.125rem) !important;
         color: #6b7280;
-        font-style: italic;
-        font-weight: 500;
+        font-weight: 600;
         line-height: 1.2;
     }
     
-    /* Score inputs - TỐI ƯU CHO 2 KÝ TỰ */
+    /* Score inputs - PERFECT FOR 2 DIGITS */
+    .stNumberInput {
+        width: 100% !important;
+    }
+    
     .stNumberInput > div > div > input {
         text-align: center !important;
-        font-size: clamp(1.5rem, 6vw, 2rem) !important;
+        font-size: clamp(1.75rem, 7vw, 2.25rem) !important;
         font-weight: 900 !important;
-        padding: 0.75rem 0.25rem !important;
-        border-radius: 10px !important;
+        padding: 1rem 0.5rem !important;
+        border-radius: 12px !important;
         border: 3px solid #d1d5db !important;
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-        min-height: 60px !important;
-        max-width: 80px !important;
-        width: 80px !important;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-        transition: all 0.3s ease !important;
+        height: 70px !important;
+        width: 90px !important;
+        max-width: 90px !important;
+        min-width: 90px !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         margin: 0 auto !important;
+        display: block !important;
     }
     
     .stNumberInput > div > div > input:focus {
-        border-color: #1e40af !important;
-        box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+        border-color: #1d4ed8 !important;
+        box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.06) !important;
         outline: none !important;
         background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
+        transform: scale(1.02);
     }
     
-    /* Readonly score display compact */
+    /* Readonly score display */
     .readonly-score {
         background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%) !important;
-        padding: 0.75rem 0.25rem !important;
-        border-radius: 10px !important;
-        text-align: center !important;
-        font-weight: 900 !important;
-        font-size: clamp(1.5rem, 6vw, 2rem) !important;
-        color: #374151 !important;
         border: 3px solid #d1d5db !important;
-        min-height: 60px !important;
-        max-width: 80px !important;
-        width: 80px !important;
+        border-radius: 12px !important;
+        height: 70px !important;
+        width: 90px !important;
+        margin: 0 auto !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        margin: 0 auto !important;
+        font-size: clamp(1.75rem, 7vw, 2.25rem) !important;
+        font-weight: 900 !important;
+        color: #374151 !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04) !important;
     }
     
-    /* VS text */
-    .vs-text {
+    /* VS separator */
+    .vs-separator {
         text-align: center;
         font-size: clamp(1.5rem, 6vw, 2rem) !important;
         font-weight: 900 !important;
@@ -261,247 +329,330 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0.5rem;
+        height: 70px;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
     
-    /* Standings header */
+    /* Match layout grid */
+    .match-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 1rem;
+        align-items: center;
+        margin-top: 1rem;
+    }
+    
+    @media (max-width: 480px) {
+        .match-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        .match-scores {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+    }
+    
+    /* Standings responsive */
     .standings-header {
-        background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+        background: linear-gradient(135deg, #b59410 0%, #eab308 100%);
         color: white;
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 1rem 0;
+        padding: 1.25rem;
+        border-radius: 12px;
+        margin: 1.25rem 0;
         text-align: center;
-        box-shadow: 0 2px 10px rgba(184, 134, 11, 0.2);
+        box-shadow: 0 4px 16px rgba(181, 148, 16, 0.2);
     }
     
     .standings-header h3 {
         margin: 0;
-        font-size: clamp(1.2rem, 5vw, 1.5rem) !important;
-        font-weight: 600 !important;
+        font-size: clamp(1.25rem, 5vw, 1.625rem) !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.025em;
     }
     
-    /* Standing items */
-    .standing-item {
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 0.75rem 0;
+    .standing-card {
         background: white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border-left: 4px solid transparent;
-    }
-    
-    .standing-item.qualified {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        color: #1e40af;
-        font-weight: 600;
-        border-left-color: #1e40af;
-    }
-    
-    .standing-item.not-qualified {
-        background: #f9fafb;
-        color: #374151;
-        border-left-color: #d1d5db;
-    }
-    
-    .standing-team-name {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
-        font-weight: 700 !important;
-        margin-bottom: 0.25rem;
-        line-height: 1.2;
-    }
-    
-    .standing-team-players {
-        font-size: clamp(0.8rem, 3vw, 1rem) !important;
-        color: #6b7280;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-    }
-    
-    .standing-stats {
-        font-size: clamp(0.9rem, 3.5vw, 1rem) !important;
-        font-weight: 600;
-        text-align: right;
-    }
-    
-    /* Final match special styling */
-    .final-match {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        border: 3px solid #b8860b;
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        box-shadow: 0 4px 20px rgba(184, 134, 11, 0.2);
-    }
-    
-    /* Rankings */
-    .ranking-item {
-        background: linear-gradient(135deg, #fef3c7 0%, #dbeafe 100%);
         border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        border-left: 6px solid #b8860b;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        padding: 1.25rem;
+        margin: 0.75rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        border-left: 5px solid transparent;
+        transition: transform 0.2s ease;
     }
     
-    .ranking-title {
-        font-size: clamp(1.2rem, 5vw, 1.6rem) !important;
-        font-weight: 700 !important;
-        color: #b8860b;
-        margin-bottom: 0.5rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    .standing-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     
-    .ranking-team-name {
-        font-weight: 700 !important;
-        margin-bottom: 0.25rem;
-        font-size: clamp(1rem, 4vw, 1.3rem) !important;
-        color: #111827;
+    .standing-card.qualified {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-left-color: #1d4ed8;
+        color: #1e3a8a;
     }
     
-    .ranking-team-players {
-        color: #6b7280;
-        font-size: clamp(0.9rem, 3.5vw, 1.1rem) !important;
-        font-weight: 500;
+    .standing-card.not-qualified {
+        background: #f9fafb;
+        border-left-color: #d1d5db;
+        color: #374151;
     }
     
-    .ranking-position {
-        font-size: clamp(2.5rem, 10vw, 4rem) !important;
-        font-weight: 900 !important;
-        color: #1e40af;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        line-height: 0.9;
+    .standing-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
     }
     
-    /* Action buttons */
-    .stButton button[kind="primary"] {
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
-        color: white !important;
-        border: none !important;
-        font-size: clamp(1rem, 4vw, 1.3rem) !important;
-        font-weight: 700 !important;
-        padding: 1rem 1.5rem !important;
-        border-radius: 12px !important;
-        min-height: 60px !important;
-        box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3) !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .stButton button[kind="primary"]:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4) !important;
-    }
-    
-    /* Save indicator */
-    .save-indicator {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-        text-align: center;
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
-        font-weight: 600;
-        animation: fadeIn 0.5s ease-in;
-        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
-    }
-    
-    /* Edit indicator */
-    .edit-indicator {
-        background: #f59e0b;
-        color: white;
-        padding: 0.25rem 0.5rem;
-        border-radius: 5px;
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem) !important;
-        font-weight: 600;
-        margin-left: 0.5rem;
-    }
-    
-    /* Form elements */
-    .stSelectbox > div > div {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
-        padding: 0.75rem !important;
-        border-radius: 8px !important;
-        min-height: 50px !important;
-    }
-    
-    .stTextInput > div > div > input {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
-        padding: 0.75rem 1rem !important;
-        border-radius: 8px !important;
-        min-height: 50px !important;
-    }
-    
-    /* Expander */
-    .streamlit-expanderHeader {
-        font-size: clamp(1rem, 4vw, 1.2rem) !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Mobile responsive adjustments */
-    @media (max-width: 640px) {
-        .match-card {
-            padding: 0.75rem;
-        }
-        
-        .mobile-header {
-            padding: 1.25rem 0.75rem;
-        }
-        
-        .user-info {
+    @media (max-width: 480px) {
+        .standing-info {
             flex-direction: column;
             text-align: center;
             gap: 0.75rem;
         }
-        
-        .ranking-item {
+    }
+    
+    .team-details h4 {
+        font-size: clamp(1.125rem, 4.5vw, 1.375rem) !important;
+        font-weight: 800 !important;
+        margin: 0 0 0.25rem 0 !important;
+        line-height: 1.1;
+    }
+    
+    .team-details p {
+        font-size: clamp(0.875rem, 3.5vw, 1.125rem) !important;
+        margin: 0 !important;
+        font-weight: 600;
+        opacity: 0.8;
+    }
+    
+    .team-stats {
+        text-align: right;
+        font-size: clamp(0.875rem, 3.5vw, 1rem) !important;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+    
+    @media (max-width: 480px) {
+        .team-stats {
             text-align: center;
-        }
-        
-        .standing-stats {
-            text-align: center !important;
-            margin-top: 0.5rem;
-        }
-        
-        .standing-row {
-            flex-direction: column;
-            text-align: center;
-            gap: 0.5rem;
         }
     }
     
-    /* Touch improvements */
+    /* Rankings mobile-optimized */
+    .ranking-card {
+        background: linear-gradient(135deg, #fef3c7 0%, #dbeafe 100%);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-left: 6px solid #b59410;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    @media (max-width: 480px) {
+        .ranking-card {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+    }
+    
+    .ranking-info {
+        flex: 1;
+    }
+    
+    .ranking-title {
+        font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
+        font-weight: 800 !important;
+        color: #b59410;
+        margin-bottom: 0.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .ranking-team {
+        font-size: clamp(1.125rem, 4.5vw, 1.5rem) !important;
+        font-weight: 700 !important;
+        margin-bottom: 0.375rem;
+        color: #111827;
+    }
+    
+    .ranking-players {
+        font-size: clamp(0.875rem, 3.5vw, 1.125rem) !important;
+        color: #6b7280;
+        font-weight: 600;
+    }
+    
+    .ranking-position {
+        font-size: clamp(3rem, 12vw, 5rem) !important;
+        font-weight: 900 !important;
+        color: #1d4ed8;
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+        line-height: 0.8;
+    }
+    
+    /* Action buttons responsive */
+    .action-btn {
+        width: 100% !important;
+        margin: 1rem 0 !important;
+    }
+    
+    .stButton button[kind="primary"] {
+        background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%) !important;
+        color: white !important;
+        border: none !important;
+        font-size: clamp(1.125rem, 4.5vw, 1.375rem) !important;
+        font-weight: 800 !important;
+        padding: 1.25rem 2rem !important;
+        border-radius: 12px !important;
+        min-height: 64px !important;
+        box-shadow: 0 6px 20px rgba(29, 78, 216, 0.3) !important;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+    
+    .stButton button[kind="primary"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(29, 78, 216, 0.4) !important;
+    }
+    
+    /* Success indicators */
+    .success-alert {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        margin: 1rem 0;
+        text-align: center;
+        font-size: clamp(1rem, 4vw, 1.25rem) !important;
+        font-weight: 700;
+        animation: slideInUp 0.5s ease-out;
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25);
+    }
+    
+    /* Form elements responsive */
+    .stSelectbox > div > div {
+        font-size: clamp(1rem, 4vw, 1.25rem) !important;
+        padding: 1rem !important;
+        border-radius: 10px !important;
+        min-height: 56px !important;
+        border: 2px solid #d1d5db !important;
+    }
+    
+    .stTextInput > div > div > input {
+        font-size: clamp(1rem, 4vw, 1.25rem) !important;
+        padding: 1rem 1.25rem !important;
+        border-radius: 10px !important;
+        min-height: 56px !important;
+        border: 2px solid #d1d5db !important;
+    }
+    
+    /* Expander responsive */
+    .streamlit-expanderHeader {
+        font-size: clamp(1rem, 4vw, 1.25rem) !important;
+        font-weight: 700 !important;
+        padding: 1rem !important;
+    }
+    
+    /* Metrics grid */
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .metric-card {
+        text-align: center;
+        padding: 1.25rem 1rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+    }
+    
+    .metric-value {
+        font-size: clamp(1.875rem, 7vw, 2.5rem) !important;
+        font-weight: 900 !important;
+        color: #1d4ed8;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric-label {
+        font-size: clamp(0.875rem, 3.5vw, 1rem) !important;
+        color: #6b7280;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+    
+    /* Footer responsive */
+    .footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 12px;
+        margin-top: 2rem;
+        border: 1px solid #e5e7eb;
+    }
+    
+    .footer p {
+        margin: 0.5rem 0 !important;
+        font-size: clamp(0.875rem, 3.5vw, 1.125rem) !important;
+        color: #6b7280;
+        font-weight: 600;
+    }
+    
+    .footer strong {
+        color: #1d4ed8;
+    }
+    
+    /* Animations */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* Touch optimization */
     @media (hover: none) and (pointer: coarse) {
+        .match-card:hover,
+        .standing-card:hover,
         .stButton button:hover {
             transform: none !important;
         }
     }
     
-    /* Metrics compact */
-    .metric-container {
-        text-align: center;
-        padding: 0.75rem;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .metric-value {
-        font-size: clamp(1.5rem, 6vw, 2rem) !important;
-        font-weight: 700 !important;
-        color: #1e40af;
-    }
-    
-    .metric-label {
-        font-size: clamp(0.8rem, 3vw, 1rem) !important;
-        color: #6b7280;
-        font-weight: 500;
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(5px); }
-        to { opacity: 1; transform: translateY(0); }
+    /* Accessibility */
+    .sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -560,7 +711,7 @@ def show_login():
     st.markdown("""
     <div class="login-container">
         <div class="login-header">
-            <h2>🏓 Đăng nhập Hệ thống</h2>
+            <h1>🏓 Đăng nhập Hệ thống</h1>
             <p>Giải Pickleball - Trọng tài</p>
         </div>
     </div>
@@ -570,7 +721,7 @@ def show_login():
         st.markdown("### 👤 Thông tin đăng nhập")
         
         username = st.selectbox(
-            "Tên đăng nhập:",
+            "Chọn tài khoản:",
             ["", "admin", "tu", "quang"],
             help="Chọn tài khoản của bạn"
         )
@@ -599,18 +750,18 @@ def show_login():
     
     with st.expander("📖 Hướng dẫn sử dụng", expanded=True):
         st.markdown("""
-        **Tài khoản mẫu:**
+        **Tài khoản có sẵn:**
         
-        🔴 **Admin** (Quản trị viên)
-        - Tên đăng nhập: `admin` | Mật khẩu: `123456`
+        🔴 **Admin** - Quản trị viên
+        - Đăng nhập: `admin` | Mật khẩu: `123456`
         - Quyền: Xem và chỉnh sửa tất cả, quản lý hệ thống
         
-        🟢 **Trọng tài Tú** (Bảng A)
-        - Tên đăng nhập: `tu` | Mật khẩu: `123456`
+        🟢 **Trọng tài Tú** - Phụ trách Bảng A  
+        - Đăng nhập: `tu` | Mật khẩu: `123456`
         - Quyền: Chỉ chỉnh sửa các trận ở Bảng A
         
-        🔵 **Trọng tài Quang** (Bảng B)
-        - Tên đăng nhập: `quang` | Mật khẩu: `123456`
+        🔵 **Trọng tài Quang** - Phụ trách Bảng B
+        - Đăng nhập: `quang` | Mật khẩu: `123456`
         - Quyền: Chỉ chỉnh sửa các trận ở Bảng B
         """)
 
@@ -654,7 +805,7 @@ if 'current_stage' not in st.session_state:
 if 'group_standings' not in st.session_state:
     st.session_state.group_standings = {"A": [], "B": []}
 
-# Các hàm tính toán
+# Các hàm tính toán (giữ nguyên)
 def calculate_standings():
     for group in ["A", "B"]:
         group_teams = [team for team in teams if team["group"] == group]
@@ -778,11 +929,13 @@ def get_ranking_list():
     ]
 
 def render_match_card(match, is_final=False):
-    """Render match card với input box tối ưu cho nhập 2 ký tự"""
+    """Render match card responsive với score inputs tối ưu"""
     current_user = st.session_state.current_user
     can_edit = can_edit_match(current_user, match)
     
-    card_class = "final-match" if is_final else "match-card"
+    card_class = "match-card"
+    if is_final:
+        card_class += " final-match"
     if not can_edit and current_user["role"] != "admin":
         card_class += " readonly"
     
@@ -797,25 +950,31 @@ def render_match_card(match, is_final=False):
     elif match["stage"] == "final":
         title = "🏆 CHUNG KẾT"
     
-    # Thông tin chỉnh sửa
+    # Edit info
     edit_info = ""
     if match.get("edited_by"):
-        edit_info = f'<span class="edit-indicator">{match["edited_by"]}</span>'
+        edit_info = f'<span class="edit-badge">{match["edited_by"]}</span>'
     
-    st.markdown(f'<div class="match-title">{title} {edit_info}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="match-title">{title}{edit_info}</div>', unsafe_allow_html=True)
     
-    # Layout: Team - Score - VS - Score - Team
-    col1, col2, col3, col4, col5 = st.columns([3, 1.2, 0.6, 1.2, 3])
+    # Desktop/Tablet layout
+    st.markdown('<div class="match-grid">', unsafe_allow_html=True)
+    
+    # Team 1 info
+    st.markdown(f"""
+    <div class="team-section">
+        <div class="team-name">{match['team1']['name']}</div>
+        <div class="team-players">{' + '.join(match['team1']['players'])}</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Scores section cho mobile
+    st.markdown('<div class="match-scores">', unsafe_allow_html=True)
+    
+    # Team 1 score
+    col1, col2, col3 = st.columns([1, 0.3, 1])
     
     with col1:
-        st.markdown(f"""
-        <div class="team-info">
-            <div class="team-name">{match['team1']['name']}</div>
-            <div class="team-players">{' + '.join(match['team1']['players'])}</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
         if can_edit or current_user["role"] == "admin":
             score1 = st.number_input(
                 label="Tỷ số đội 1",
@@ -824,7 +983,7 @@ def render_match_card(match, is_final=False):
                 value=match["score1"] or 0,
                 key=f"score1_{match['id']}",
                 label_visibility="collapsed",
-                help="Nhập tỷ số đội 1 (0-99)"
+                help="Tỷ số (0-99)"
             )
             if score1 != (match["score1"] or 0):
                 match["score1"] = score1
@@ -838,10 +997,10 @@ def render_match_card(match, is_final=False):
             </div>
             """, unsafe_allow_html=True)
     
-    with col3:
-        st.markdown('<div class="vs-text">-</div>', unsafe_allow_html=True)
+    with col2:
+        st.markdown('<div class="vs-separator">-</div>', unsafe_allow_html=True)
     
-    with col4:
+    with col3:
         if can_edit or current_user["role"] == "admin":
             score2 = st.number_input(
                 label="Tỷ số đội 2",
@@ -850,7 +1009,7 @@ def render_match_card(match, is_final=False):
                 value=match["score2"] or 0,
                 key=f"score2_{match['id']}",
                 label_visibility="collapsed",
-                help="Nhập tỷ số đội 2 (0-99)"
+                help="Tỷ số (0-99)"
             )
             if score2 != (match["score2"] or 0):
                 match["score2"] = score2
@@ -864,15 +1023,18 @@ def render_match_card(match, is_final=False):
             </div>
             """, unsafe_allow_html=True)
     
-    with col5:
-        st.markdown(f"""
-        <div class="team-info">
-            <div class="team-name">{match['team2']['name']}</div>
-            <div class="team-players">{' + '.join(match['team2']['players'])}</div>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)  # Close match-scores
     
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Team 2 info
+    st.markdown(f"""
+    <div class="team-section">
+        <div class="team-name">{match['team2']['name']}</div>
+        <div class="team-players">{' + '.join(match['team2']['players'])}</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)  # Close match-grid
+    st.markdown('</div>', unsafe_allow_html=True)  # Close match-card
 
 # === MAIN APP ===
 
@@ -881,16 +1043,16 @@ if not st.session_state.authenticated:
     show_login()
     st.stop()
 
-# User info bar
+# User info
 current_user = st.session_state.current_user
-role_badge = "admin-badge" if current_user["role"] == "admin" else "referee-badge"
+role_badge_class = "admin-badge" if current_user["role"] == "admin" else "referee-badge"
 role_text = "ADMIN" if current_user["role"] == "admin" else f"TRỌNG TÀI {current_user.get('group', '')}"
 
 st.markdown(f"""
 <div class="user-info">
     <div>
         <strong>👤 {current_user['name']}</strong>
-        <span class="{role_badge}">{role_text}</span>
+        <span class="role-badge {role_badge_class}">{role_text}</span>
     </div>
     <div>
         <strong>🏓 Giải Pickleball 2024</strong>
@@ -898,25 +1060,27 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Logout button
+# Logout
 if st.button("🚪 Đăng xuất", key="logout", type="secondary"):
     for key in list(st.session_state.keys()):
         del st.session_state[key]
     st.rerun()
 
-# Tính toán bảng xếp hạng
+# Calculate standings
 calculate_standings()
 
-# Header
+# Main header
 st.markdown("""
-<div class="mobile-header">
+<div class="app-header">
     <h1>🏓 GIẢI PICKLEBALL</h1>
     <p>Hệ thống Trọng tài Điện tử</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Navigation
+st.markdown('<div class="nav-container">', unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
+
 with col1:
     if st.button("📋 VÒNG BẢNG", key="nav_group", use_container_width=True, type="primary" if st.session_state.current_stage == 'group' else "secondary"):
         st.session_state.current_stage = 'group'
@@ -929,38 +1093,33 @@ with col3:
     if st.button("🏆 CHUNG KẾT", key="nav_final", use_container_width=True, type="primary" if st.session_state.current_stage == 'final' else "secondary"):
         st.session_state.current_stage = 'final'
 
+st.markdown('</div>', unsafe_allow_html=True)
+
 # Admin panel
 if current_user["role"] == "admin":
     with st.expander("🔧 BẢNG ĐIỀU KHIỂN ADMIN", expanded=False):
         st.markdown("### 📊 THỐNG KÊ HỆ THỐNG")
         
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            total_matches = len(st.session_state.matches)
-            st.markdown(f"""
-            <div class="metric-container">
+        total_matches = len(st.session_state.matches)
+        completed_matches = len([m for m in st.session_state.matches if m["score1"] is not None and m["score2"] is not None])
+        save_count = len(st.session_state.get('saved_matches', {}))
+        
+        st.markdown(f"""
+        <div class="metrics-grid">
+            <div class="metric-card">
                 <div class="metric-value">{total_matches}</div>
-                <div class="metric-label">Tổng số trận</div>
+                <div class="metric-label">Tổng trận</div>
             </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            completed_matches = len([m for m in st.session_state.matches if m["score1"] is not None and m["score2"] is not None])
-            st.markdown(f"""
-            <div class="metric-container">
+            <div class="metric-card">
                 <div class="metric-value">{completed_matches}</div>
-                <div class="metric-label">Trận hoàn thành</div>
+                <div class="metric-label">Hoàn thành</div>
             </div>
-            """, unsafe_allow_html=True)
-        
-        with col3:
-            save_count = len(st.session_state.get('saved_matches', {}))
-            st.markdown(f"""
-            <div class="metric-container">
+            <div class="metric-card">
                 <div class="metric-value">{save_count}</div>
-                <div class="metric-label">Lần lưu dữ liệu</div>
+                <div class="metric-label">Lần lưu</div>
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
         
         # Reset data
         if st.button("🔄 RESET TOÀN BỘ DỮ LIỆU", type="secondary"):
@@ -975,7 +1134,7 @@ if current_user["role"] == "admin":
 if st.session_state.current_stage == 'group':
     # Group A
     if current_user["role"] == "admin" or current_user.get("group") == "A":
-        st.markdown('<div class="group-header"><h3>BẢNG A - LỊCH THI ĐẤU</h3></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-header"><h3>BẢNG A - LỊCH THI ĐẤU</h3></div>', unsafe_allow_html=True)
         
         group_a_matches = [match for match in st.session_state.matches if match.get("group") == "A"]
         for match in group_a_matches:
@@ -983,7 +1142,7 @@ if st.session_state.current_stage == 'group':
     
     # Group B
     if current_user["role"] == "admin" or current_user.get("group") == "B":
-        st.markdown('<div class="group-header"><h3>BẢNG B - LỊCH THI ĐẤU</h3></div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-header"><h3>BẢNG B - LỊCH THI ĐẤU</h3></div>', unsafe_allow_html=True)
         
         group_b_matches = [match for match in st.session_state.matches if match.get("group") == "B"]
         for match in group_b_matches:
@@ -993,7 +1152,7 @@ if st.session_state.current_stage == 'group':
     if current_user["role"] == "referee":
         if st.button("💾 LƯU TỶ SỐ VÒNG BẢNG", use_container_width=True, type="primary"):
             save_match_data()
-            st.markdown('<div class="save-indicator">✅ ĐÃ LƯU TỶ SỐ THÀNH CÔNG!</div>', unsafe_allow_html=True)
+            st.markdown('<div class="success-alert">✅ ĐÃ LƯU TỶ SỐ THÀNH CÔNG!</div>', unsafe_allow_html=True)
     
     # Standings
     st.markdown("---")
@@ -1004,13 +1163,13 @@ if st.session_state.current_stage == 'group':
     for i, standing in enumerate(st.session_state.group_standings["A"]):
         css_class = "qualified" if i < 2 else "not-qualified"
         st.markdown(f"""
-        <div class="standing-item {css_class}">
-            <div class="standing-row">
-                <div>
-                    <div class="standing-team-name">{i+1}. {standing["team"]["name"]}</div>
-                    <div class="standing-team-players">{" + ".join(standing["team"]["players"])}</div>
+        <div class="standing-card {css_class}">
+            <div class="standing-info">
+                <div class="team-details">
+                    <h4>{i+1}. {standing["team"]["name"]}</h4>
+                    <p>{" + ".join(standing["team"]["players"])}</p>
                 </div>
-                <div class="standing-stats">
+                <div class="team-stats">
                     {standing["wins"]} THẮNG - {standing["losses"]} THUA<br>
                     HIỆU SỐ: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}
                 </div>
@@ -1024,13 +1183,13 @@ if st.session_state.current_stage == 'group':
     for i, standing in enumerate(st.session_state.group_standings["B"]):
         css_class = "qualified" if i < 2 else "not-qualified"
         st.markdown(f"""
-        <div class="standing-item {css_class}">
-            <div class="standing-row">
-                <div>
-                    <div class="standing-team-name">{i+1}. {standing["team"]["name"]}</div>
-                    <div class="standing-team-players">{" + ".join(standing["team"]["players"])}</div>
+        <div class="standing-card {css_class}">
+            <div class="standing-info">
+                <div class="team-details">
+                    <h4>{i+1}. {standing["team"]["name"]}</h4>
+                    <p>{" + ".join(standing["team"]["players"])}</p>
                 </div>
-                <div class="standing-stats">
+                <div class="team-stats">
                     {standing["wins"]} THẮNG - {standing["losses"]} THUA<br>
                     HIỆU SỐ: {'+' if standing["points_diff"] >= 0 else ''}{standing["points_diff"]}
                 </div>
@@ -1042,26 +1201,26 @@ if st.session_state.current_stage == 'group':
     if current_user["role"] == "admin":
         if (len(st.session_state.group_standings["A"]) >= 2 and 
             len(st.session_state.group_standings["B"]) >= 2):
-            if st.button("🚀 TẠO LỊCH VÒNG LOẠI TRỰC TIẾP", use_container_width=True, type="primary"):
+            if st.button("🚀 TẠO LỊCH VÒNG LOẠI TRỰC TIẾP", key="gen_knockout", use_container_width=True, type="primary"):
                 generate_knockout_matches()
                 st.success("✅ Đã tạo lịch bán kết!")
                 st.rerun()
 
 elif st.session_state.current_stage == 'semi':
-    st.markdown('<div class="group-header"><h3>⚡ VÒNG BÁN KẾT</h3></div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header"><h3>⚡ VÒNG BÁN KẾT</h3></div>', unsafe_allow_html=True)
     
     semi_matches = [match for match in st.session_state.matches if match["stage"] == "semi"]
     for match in semi_matches:
         render_match_card(match)
     
     if current_user["role"] == "admin":
-        if st.button("🏆 TẠO LỊCH CHUNG KẾT", use_container_width=True, type="primary"):
+        if st.button("🏆 TẠO LỊCH CHUNG KẾT", key="gen_final", use_container_width=True, type="primary"):
             generate_final_matches()
             st.success("✅ Đã tạo lịch chung kết!")
             st.rerun()
 
 elif st.session_state.current_stage == 'final':
-    st.markdown('<div class="group-header"><h3>🏆 TRẬN CHUNG KẾT</h3></div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header"><h3>🏆 TRẬN CHUNG KẾT</h3></div>', unsafe_allow_html=True)
     
     final_matches = [match for match in st.session_state.matches if match["stage"] == "final"]
     for match in final_matches:
@@ -1075,24 +1234,21 @@ elif st.session_state.current_stage == 'final':
         
         for ranking in rankings:
             st.markdown(f"""
-            <div class="ranking-item">
-                <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-                    <div style="flex: 1;">
-                        <div class="ranking-title">{ranking["title"]}</div>
-                        <div class="ranking-team-name">{ranking["team"]["name"]}</div>
-                        <div class="ranking-team-players">{" + ".join(ranking["team"]["players"])}</div>
-                    </div>
-                    <div class="ranking-position">#{ranking["position"]}</div>
+            <div class="ranking-card">
+                <div class="ranking-info">
+                    <div class="ranking-title">{ranking["title"]}</div>
+                    <div class="ranking-team">{ranking["team"]["name"]}</div>
+                    <div class="ranking-players">{" + ".join(ranking["team"]["players"])}</div>
                 </div>
+                <div class="ranking-position">#{ranking["position"]}</div>
             </div>
             """, unsafe_allow_html=True)
 
 # Footer
-st.markdown("---")
 st.markdown(f"""
-<div style="text-align: center; padding: 1.5rem; color: #6b7280; font-size: clamp(0.9rem, 3.5vw, 1.1rem); background: #f9fafb; border-radius: 10px; margin-top: 1.5rem;">
+<div class="footer">
     <p><strong>🏓 GIẢI PICKLEBALL - HỆ THỐNG TRỌNG TÀI ĐIỆN TỬ</strong></p>
-    <p>Phiên bản: 2.2 Mobile-Optimized | Người dùng: <strong>{current_user['name']}</strong></p>
-    <p>📱 Tối ưu hoàn toàn cho điện thoại di động</p>
+    <p>Phiên bản: 3.0 Mobile-First | <strong>{current_user['name']}</strong></p>
+    <p>📱 Responsive Design | 🎯 Touch Optimized</p>
 </div>
 """, unsafe_allow_html=True)
