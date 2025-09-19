@@ -1,6 +1,5 @@
 import streamlit as st
-import pandas as pd
-from typing import List, Dict, Optional
+from typing import Optional
 
 # Cấu hình trang
 st.set_page_config(
@@ -526,13 +525,19 @@ def get_ranking_list():
         {"position": 3, "team": sf2_loser, "title": "🥉 Đồng giải 3"},
     ]
 
+def reset_scores(stage: Optional[str] = None):
+    """Reset điểm số các trận theo stage (group, semi, final) hoặc tất cả nếu stage=None"""
+    for match in st.session_state.matches:
+        if stage is None or match["stage"] == stage:
+            match["score1"] = None
+            match["score2"] = None
+    calculate_standings()
+    st.experimental_rerun()
+
 def render_match_card(match, is_final=False):
-    """Render match card with mobile-optimized layout"""
     card_class = "final-match" if is_final else "match-card"
-    
     st.markdown(f'<div class="{card_class}">', unsafe_allow_html=True)
-    
-    # Match title
+
     title = ""
     if match["stage"] == "group":
         title = f"Trận {match['id']}"
@@ -540,12 +545,9 @@ def render_match_card(match, is_final=False):
         title = "Bán kết 1" if match["id"] == "SF1" else "Bán kết 2"
     elif match["stage"] == "final":
         title = "🏆 Chung kết"
-    
     st.markdown(f'<div class="match-title">{title}</div>', unsafe_allow_html=True)
-    
-    # Teams and scores
+
     col1, col2, col3, col4, col5 = st.columns([3, 1.5, 0.5, 1.5, 3])
-    
     with col1:
         st.markdown(f"""
         <div class="team-info">
@@ -553,32 +555,30 @@ def render_match_card(match, is_final=False):
             <div class="team-players">{' + '.join(match['team1']['players'])}</div>
         </div>
         """, unsafe_allow_html=True)
-    
     with col2:
         score1 = st.number_input(
             label="Score 1",
             min_value=0,
-            value=match["score1"] or 0,
+            value=match["score1"] if match["score1"] is not None else 0,
             key=f"score1_{match['id']}",
             label_visibility="collapsed"
         )
         if score1 != (match["score1"] or 0):
             match["score1"] = score1
-    
+            calculate_standings()
     with col3:
         st.markdown('<div class="vs-text">-</div>', unsafe_allow_html=True)
-    
     with col4:
         score2 = st.number_input(
             label="Score 2",
             min_value=0,
-            value=match["score2"] or 0,
+            value=match["score2"] if match["score2"] is not None else 0,
             key=f"score2_{match['id']}",
             label_visibility="collapsed"
         )
         if score2 != (match["score2"] or 0):
             match["score2"] = score2
-    
+            calculate_standings()
     with col5:
         st.markdown(f"""
         <div class="team-info">
@@ -586,7 +586,6 @@ def render_match_card(match, is_final=False):
             <div class="team-players">{' + '.join(match['team2']['players'])}</div>
         </div>
         """, unsafe_allow_html=True)
-    
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Tính toán bảng xếp hạng
@@ -620,26 +619,19 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # Group Stage
 if st.session_state.current_stage == 'group':
-    # Group A
     st.markdown('<div class="group-header"><h3>Bảng A - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
-    
-    group_a_matches = [match for match in st.session_state.matches if match.get("group") == "A"]
+    group_a_matches = [m for m in st.session_state.matches if m.get("group") == "A"]
     for match in group_a_matches:
         render_match_card(match)
-    
-    # Group B
     st.markdown('<div class="group-header"><h3>Bảng B - Lịch thi đấu</h3></div>', unsafe_allow_html=True)
-    
-    group_b_matches = [match for match in st.session_state.matches if match.get("group") == "B"]
+    group_b_matches = [m for m in st.session_state.matches if m.get("group") == "B"]
     for match in group_b_matches:
         render_match_card(match)
-    
-    # Standings
+    if st.button("🔄 Reset tỷ số vòng bảng", key="reset_group", use_container_width=True):
+        reset_scores(stage="group")
+
     st.markdown("---")
-    
-    # Group A Standings
     st.markdown('<div class="standings-header"><h3>Bảng xếp hạng A</h3></div>', unsafe_allow_html=True)
-    
     for i, standing in enumerate(st.session_state.group_standings["A"]):
         css_class = "qualified" if i < 2 else "not-qualified"
         st.markdown(f"""
@@ -656,10 +648,7 @@ if st.session_state.current_stage == 'group':
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    # Group B Standings
     st.markdown('<div class="standings-header"><h3>Bảng xếp hạng B</h3></div>', unsafe_allow_html=True)
-    
     for i, standing in enumerate(st.session_state.group_standings["B"]):
         css_class = "qualified" if i < 2 else "not-qualified"
         st.markdown(f"""
@@ -676,40 +665,36 @@ if st.session_state.current_stage == 'group':
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    # Button to generate knockout
     if (len(st.session_state.group_standings["A"]) >= 2 and 
         len(st.session_state.group_standings["B"]) >= 2):
         if st.button("🚀 Tạo lịch vòng loại trực tiếp", key="generate_knockout", use_container_width=True, type="primary"):
             generate_knockout_matches()
-            st.rerun()
+            st.experimental_rerun()
 
 # Semi-finals
 elif st.session_state.current_stage == 'semi':
     st.markdown('<div class="group-header"><h3>⚡ Vòng bán kết</h3></div>', unsafe_allow_html=True)
-    
-    semi_matches = [match for match in st.session_state.matches if match["stage"] == "semi"]
+    semi_matches = [m for m in st.session_state.matches if m["stage"] == "semi"]
     for match in semi_matches:
         render_match_card(match)
-    
+    if st.button("🔄 Reset tỷ số bán kết", key="reset_semi", use_container_width=True):
+        reset_scores(stage="semi")
     if st.button("🏆 Tạo lịch chung kết", key="generate_final", use_container_width=True, type="primary"):
         generate_final_matches()
-        st.rerun()
+        st.experimental_rerun()
 
 # Finals
 elif st.session_state.current_stage == 'final':
     st.markdown('<div class="group-header"><h3>🏆 Trận chung kết</h3></div>', unsafe_allow_html=True)
-    
-    final_matches = [match for match in st.session_state.matches if match["stage"] == "final"]
+    final_matches = [m for m in st.session_state.matches if m["stage"] == "final"]
     for match in final_matches:
         render_match_card(match, is_final=True)
-    
-    # Final Rankings
+    if st.button("🔄 Reset tỷ số chung kết", key="reset_final", use_container_width=True):
+        reset_scores(stage="final")
     rankings = get_ranking_list()
     if rankings:
         st.markdown("---")
         st.markdown('<div class="standings-header"><h3>🎖️ Kết quả cuối cùng</h3></div>', unsafe_allow_html=True)
-        
         for ranking in rankings:
             st.markdown(f"""
             <div class="ranking-item">
